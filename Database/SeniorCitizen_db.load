@@ -1,0 +1,16 @@
+LOAD DATABASE
+    FROM mssql://sa:MarcmarC0727@localhost:1434/SeniorCitizen_db
+    INTO postgresql://postgres.khmrsquwgpgskgkmiakf:Y4fHNetrifQCZzTr@aws-1-ap-south-1.pooler.supabase.com:5432/postgres
+
+WITH
+    include drop,
+    create tables,
+    create indexes,
+    reset sequences
+
+ALTER SCHEMA 'dbo' RENAME TO 'public'
+
+SET PostgreSQL PARAMETERS
+    statement_timeout to '0',
+    work_mem to '2GB'
+;
