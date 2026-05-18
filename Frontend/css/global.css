@@ -1,0 +1,201 @@
+/* =========================================
+   DYNAMIC BACKGROUND SYSTEM
+   ========================================= */
+
+/* 1. Base setup for all pages */
+.page-content {
+    position: relative;
+    z-index: 1;
+    background-color: #f8f9fa; /* Keeps the clean off-white base */
+}
+
+.page-content::after {
+    content: "";
+    position: absolute;
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    z-index: -1;
+    pointer-events: none; /* Stops it from blocking clicks */
+}
+
+/* 2. Style A: The Repeating Logo (For Dashboards & Data) */
+.bg-logo-pattern::after {
+    background-image: url('/Frontend/assets/brgy-logo.PNG');
+    background-repeat: repeat;
+    background-size: 200px; /* Adjust this to make the logos larger or smaller in the pattern */
+    opacity: 0.03; /* Very faint so it never blocks text */
+}
+
+/* 3. Style B: The Blurry Photo (For Login & Landing Pages) */
+.bg-blurry-photo {
+    position: relative;
+    z-index: 1;
+    background-color: #f8f9fa; /* Soft base color */
+}
+
+.bg-blurry-photo::after {
+    content: "";
+    position: absolute;
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    background-image: url('/Frontend/assets/help-for-seniors-@3X.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(5px);
+    transform: scale(1.05);
+    opacity: 0.5;
+    z-index: -1;
+    pointer-events: none;
+}
+/* =========================================
+   Global Styles (css/global.css)
+   ========================================= */
+
+   :root {
+    --brand-green: #52c329; /* Your new lighter green theme */
+    --brand-dark-green: #429d21; /* Slightly darker shade for button hover */
+    --bg-light: #f7f6f3;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: var(--bg-light);
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* Locks the body to exactly the screen height */
+    overflow: hidden; /* completely disables the main browser scrollbar */
+}
+
+/* Perfect centering for Login and Register pages */
+.main-container {
+    min-height: 100vh; /* This is the magic fix! */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px; /* Adds breathing room at the top and bottom so the card doesn't hit the screen edges */
+    overflow-y: auto; /* Ensures the browser allows vertical scrolling */
+}
+
+/* Global Standard Input Styling */
+label {
+    font-size: 12px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #000;
+    display: block;
+}
+
+/* Updated larger text boxes */
+input[type="text"],
+input[type="password"],
+input[type="tel"],
+input[type="email"],
+select {
+    width: 100%;
+    padding: 14px 15px; 
+    border: 1px solid #ccc;
+    border-radius: 8px; 
+    font-size: 16px; 
+    color: #333;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input::placeholder {
+    color: #999;
+}
+
+/* Green focus ring when typing */
+input:focus,
+select:focus {
+    border-color: var(--brand-green);
+    box-shadow: 0 0 0 3px rgba(82, 195, 41, 0.2);
+}
+
+/* Reusable Green Button */
+.btn-custom-green {
+    background-color: var(--brand-green); 
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    width: 100%;
+}
+
+.btn-custom-green:hover {
+    background-color: var(--brand-dark-green); 
+}
+/* =========================================
+   Utility Classes
+   ========================================= */
+   .force-hide {
+    display: none !important;
+}
+.panel-card, .stat-card, .register-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.03); /* Soft, elegant shadow */
+    padding: 24px;
+}
+/* =========================================
+   TOAST NOTIFICATIONS
+   ========================================= */
+.toast-notification {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 300px;
+    animation: slideIn 0.3s ease-in-out;
+}
+
+.toast-notification.success { border-left: 4px solid #10B981; background-color: #f0fdf4; }
+.toast-notification.error   { border-left: 4px solid #dc3545; background-color: #fef2f2; }
+.toast-notification.warning { border-left: 4px solid #f59e0b; background-color: #fffbf0; }
+.toast-notification.info    { border-left: 4px solid #3b82f6; background-color: #f0f9ff; }
+
+.toast-icon { font-size: 20px; flex-shrink: 0; }
+.toast-message { flex: 1; color: #333; font-weight: 500; }
+
+.toast-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #999;
+    padding: 0;
+}
+.toast-close:hover { color: #333; }
+
+@keyframes slideIn {
+    from { transform: translateX(400px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+@keyframes slideOut {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(400px); opacity: 0; }
+}
+
+.toast-notification.hide {
+    animation: slideOut 0.3s ease-in-out forwards;
+}

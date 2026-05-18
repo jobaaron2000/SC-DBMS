@@ -1,0 +1,126 @@
+/* =========================================
+   Registration Specific Styles (css/register.css)
+   ========================================= */
+/* Override global dashboard locks */
+html, body {
+    height: auto !important; 
+    min-height: 100vh !important;
+    overflow-y: auto !important; /* Force the scrollbar to appear */
+    margin: 0;
+    padding: 0;
+}
+
+/* Ensure the container doesn't get cut off */
+.main-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+   .register-card {
+    background-color: #ffffff;
+    padding: 50px 40px;
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 480px; 
+    text-align: left; /* Left-aligned text */
+}
+
+.register-card h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: #000;
+}
+
+.register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    width: 48%; 
+}
+
+.form-group.full-width {
+    width: 100%;
+}
+
+.register-btn-spacing {
+    margin-top: 20px;
+}
+
+/* Custom Dropdown Arrow */
+.select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.select-wrapper select {
+    appearance: none; 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #fff;
+    cursor: pointer;
+    padding-right: 30px; 
+}
+label
+{
+    font-size: 15px;
+}
+.select-wrapper::after {
+    content: '▼'; 
+    font-size: 12px;
+    color: #333;
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none; 
+}
+
+.footer-link {
+    font-size: 15px;
+    margin-top: 25px;
+    color: #000;
+    text-align: center; /* Bottom link stays centered */
+}
+
+.footer-link a {
+    color: #000;
+    text-decoration: underline; 
+    font-weight: bold;
+}
+
+.footer-link a:hover {
+    color: #333;
+}
+
+/* =========================================
+   Mobile Responsiveness
+   ========================================= */
+   @media (max-width: 480px) {
+    .form-row {
+        flex-direction: column; /* Stacks the inputs vertically */
+        gap: 15px; /* Keeps the spacing consistent */
+    }
+    
+    .form-group {
+        width: 100%; /* Makes them take up the full width of the card */
+    }
+    
+    .register-card {
+        padding: 30px 20px; /* Slightly smaller padding for mobile screens */
+    }
+}

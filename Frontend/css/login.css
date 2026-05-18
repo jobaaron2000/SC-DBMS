@@ -1,0 +1,119 @@
+/* =========================================
+   Login Specific Styles (css/login.css)
+   ========================================= */
+   html, body {
+    height: auto !important; 
+    min-height: 100vh !important;
+    overflow-y: auto !important; /* Forces the browser to allow scrolling */
+    margin: 0;
+    padding: 0;
+}
+
+/* Ensure the wrapper doesn't trap the content */
+.main-container {
+    min-height: 100vh; /* Lets the container grow taller than the screen if needed */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+.login-card {
+    background-color: #ffffff;
+    padding: 50px 40px;
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    text-align: left; /* Left-aligned text */
+}
+
+.login-card h2 {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #000;
+}
+
+.login-logo {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    display: block; 
+    margin: 0 auto 15px auto; 
+}
+label
+{
+    font-size: 18px;
+}
+.login-subtitle {
+    font-size: 14px;
+    color: #4a4a4a;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.login-btn-spacing {
+    margin-top: 10px;
+}
+
+.footer-link {
+    font-size: 14px;
+    margin-top: 25px;
+    color: #000;
+    text-align: center;
+    display: flex;
+    flex-direction: column; /* Stacks the links perfectly */
+    gap: 10px; 
+}
+
+.footer-link a {
+    color: #000;
+    text-decoration: underline; 
+    font-weight: bold;
+}
+
+.footer-link a:hover {
+    color: #333;
+}
+
+.forgot-password-link {
+    font-size: 13px;
+    color: #185FA5;
+    text-decoration: none;
+    margin-bottom: 15px;
+    display: block;
+    text-align: right;
+}
+
+.forgot-password-link:hover {
+    text-decoration: underline;
+    color: #0C447C;
+}
+
+.position-relative {
+    position: relative;
+}
+
+.position-absolute {
+    position: absolute;
+}
+
+.forgot-password-link {
+    font-size: 13px;
+    color: #185FA5;
+    text-decoration: none;
+    margin-bottom: 15px;
+    display: block;
+    text-align: right;
+}
+
+.forgot-password-link:hover {
+    text-decoration: underline;
+    color: #0C447C;
+}

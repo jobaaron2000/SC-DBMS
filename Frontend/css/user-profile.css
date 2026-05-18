@@ -1,0 +1,62 @@
+/* Container sizing */
+.profile-container {
+    width: 100%;
+    max-width: 500px;
+}
+
+/* Big Square Profile Picture Box */
+.profile-pic-box {
+    width: 200px;
+    height: 200px;
+    border: 1px solid #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+}
+
+.profile-pic-box i {
+    font-size: 80px;
+    color: #333;
+}
+
+/* Detail Rows Layout */
+.profile-details {
+    max-width: 400px;
+}
+
+.detail-row {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.detail-label {
+    width: 150px;
+    color: #000;
+}
+
+/* Underline styling for the data */
+.detail-value {
+    flex-grow: 1;
+    border-bottom: 1px solid #000;
+    padding-bottom: 2px;
+    padding-left: 5px;
+    color: #000;
+    min-height: 28px; /* Keeps the line steady even if data is loading */
+}
+
+/* Modal Input styling */
+.custom-input-bg {
+    background-color: #e9ecef; /* Light gray background like your design */
+    border: none;
+    border-radius: 0;
+    padding: 10px;
+}
+
+.custom-input-bg:focus {
+    background-color: #e2e5e8;
+    box-shadow: none;
+    border-color: transparent;
+}

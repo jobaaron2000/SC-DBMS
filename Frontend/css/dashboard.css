@@ -1,0 +1,373 @@
+/* =========================================
+   Dashboard Specific Styles (css/dashboard.css)
+   ========================================= */
+/* --- Extra Spacing for Dashboard Elements --- */
+.page-content h1 {
+    margin-bottom: 30px; /* Pushes the stat cards further down from the title */
+}
+
+/* Adds more space below the Quick Actions button */
+.mb-4 {
+    margin-bottom: 2.5rem !important; /* Kept only the bottom spacing */
+}
+
+/* Increases the space between the Masterlist table and the Profile Panel */
+.masterlist-container {
+    margin-bottom: 30px;
+    width: 100%; /* Forces it to match the width of the stat cards */
+}
+/* --- Stat Cards --- */
+.stat-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    margin-left: -10px;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: bold;
+    color: #000;
+}
+
+/* --- Panel Cards (Masterlist & Profile) --- */
+.panel-card {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    /* Removed margin-left: 30px; */
+}
+
+.panel-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.search-bar {
+    min-width: 350px; /* Make the search bar longer */
+    border-radius: 8px;
+}
+/* Push the Print button to the far right so the row spans the whole table width */
+.filter-row-container {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    width: 100%;
+}
+/* --- Table Styling --- */
+.custom-table {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+.custom-table th {
+    background-color: #e2e2e2;
+    color: #333;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 10px 12px;
+    border-bottom: 1px solid #dee2e6;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.custom-table td {
+    padding: 10px 12px;
+    font-size: 13px;
+    vertical-align: middle;
+    border-bottom: 1px solid #dee2e6;
+    word-wrap: break-word;
+}
+
+.status-active {
+    color: #10B981 !important;
+    font-weight: bold;
+     }
+.status-deceased {
+    color: #dc3545 !important; 
+    font-weight: bold; 
+}
+
+.btn-view-profile {
+    background-color: #e9ecef;
+    border: 1px solid #adb5bd;
+    border-radius: 5px;
+    padding: 4px 10px;
+    font-size: 12px;
+    color: #333;
+    cursor: pointer;
+}
+
+.btn-view-profile:hover { 
+    background-color: #dde0e3; 
+}
+
+/* --- Right Panel: Individual Profile View --- */
+.profile-side-panel {
+    width: 320px; /* Fixed width so it doesn't get too wide */
+    flex-shrink: 0;
+}
+
+.profile-header-card {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.profile-large-icon {
+    font-size: 45px;
+    color: #6c757d;
+}
+
+.profile-photo-placeholder {
+    width: 100px;
+    height: 100px;
+    border: 1px solid #333;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #666;
+    margin: 0 auto;
+}
+
+.info-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    font-size: 12px;
+    margin-bottom: 12px;
+}
+
+.info-line span {
+    white-space: nowrap;
+    margin-right: 10px;
+}
+
+.info-underline {
+    flex-grow: 1;
+    border-bottom: 1px solid #999;
+}
+
+/* 1. Force the table text to stay on one straight line */
+.custom-table th, 
+.custom-table td {
+    white-space: nowrap; 
+}
+
+/* 2. Add a horizontal scrollbar *only* inside the table if it gets too squished */
+/* Adds a vertical scrollbar inside the table box */
+.table-responsive {
+    max-height: 400px; /* Adjust this number to make the table taller or shorter */
+    overflow-y: auto;  /* Turns on the vertical scrollbar */
+    overflow-x: auto;  /* Keeps the horizontal scrollbar just in case it gets squished */
+    border-radius: 8px; /* Keeps the corners rounded */
+}
+
+/* =========================================
+   Registration Page Styling
+   ========================================= */
+   .photo-upload-box {
+    border: 1px solid #333;
+    height: 300px;
+    background-color: #ffffff;
+    width: 100%;
+}
+
+.form-control-sm, .form-select-sm {
+    height: 32px;
+}
+
+/* =========================================
+   Registration Page Styling (Updated Theme)
+   ========================================= */
+.register-card {
+    max-width: 550px; 
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 50px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
+}
+
+.register-title {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 50px;
+    color: #000;
+}
+
+.custom-label {
+    font-size: 13px; /* FIX: Slightly smaller text */
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 3px; /* FIX: Pulled the label closer to the input box */
+}
+
+.custom-input {
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    padding: 8px 12px; /* FIX: Made the input boxes slightly thinner */
+    font-size: 14px;
+    box-shadow: none;
+}
+
+.custom-input:focus {
+    border-color: var(--brand-green);
+    box-shadow: 0 0 0 0.2rem rgba(16, 185, 129, 0.25);
+}
+
+.register-btn {
+    background-color: #68bd45; 
+    color: white;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 10px; /* FIX: Slimmed the button slightly */
+    border: none;
+}
+
+.register-btn:hover {
+    background-color: #569e38;
+    color: white;
+}
+
+.photo-upload-box {
+    border: 2px dashed #ced4da;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    padding: 20px;
+    text-align: center;
+    transition: background-color 0.2s;
+}
+
+.photo-upload-box:hover {
+    background-color: #e9ecef;
+}
+/* =========================================
+   Search and Filter Controls
+   ========================================= */
+   .filter-select {
+    width: auto;
+    cursor: pointer;
+}
+/* =========================================
+   Dashboard Specific Components
+   ========================================= */
+
+/* Quick Action Register Button */
+.btn-register-quick {
+    width: auto;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+/* Modal Detail Labels (Locks width for perfect alignment) */
+.modal-detail-label {
+    min-width: 150px;
+}
+
+/* =========================================
+   Specific Column Widths
+   ========================================= */
+   .custom-table .col-osca-id { width: 12%; }
+   .custom-table .col-name { width: 20%; }
+   .custom-table .col-age { width: 8%; }  
+   .custom-table .col-address { width: 25%; } 
+   .custom-table .col-contact { width: 15%; }
+   .custom-table .col-status { width: 10%; } 
+   .custom-table .col-action { width: 10%; }
+
+   /* =========================================
+   Modal Button Styling
+   ========================================= */
+
+#btnChangeDeceased {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+#btnChangeDeceased:hover:not(:disabled) {
+    background-color: #bb2d3b;
+    border-color: #bb2d3b;
+}
+
+#btnChangeDeceased:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#btnChangeActive {
+    background-color: #68bd45;
+    border-color: #68bd45;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+#btnChangeActive:hover:not(:disabled) {
+    background-color: #569e38;
+    border-color: #569e38;
+}
+
+#btnChangeActive:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+/* =========================================
+   PRINT / PDF STYLES
+   ========================================= */
+@media print {
+    /* Hide everything on the page by default */
+    body * {
+        visibility: hidden;
+    }
+    
+    /* Make only the masterlist container and its contents visible */
+    .panel-card, .panel-card * {
+        visibility: visible;
+    }
+    
+    /* Reposition the table to the top-left of the paper */
+    .panel-card {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        box-shadow: none;
+        border: none;
+    }
+
+    /* Hide UI elements that shouldn't be printed */
+    .search-bar, 
+    .filter-select, 
+    #btnPrintMasterlist, 
+    .col-action, 
+    td:last-child { /* Hides the actual buttons in the action column */
+        display: none !important;
+    }
+}

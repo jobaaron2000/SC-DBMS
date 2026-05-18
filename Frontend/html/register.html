@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - SCMS</title>
+    <link rel="icon" type="image/png" href="/assets/brgy-logo.PNG">
+    
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/register.css">
+</head>
+<body class="bg-blurry-photo">
+    <div class="main-container">
+        <div class="register-card">
+            <h2>Please provide required information</h2>
+            
+            <form class="register-form" action="#" id="adminRegisterForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="middleName">Middle Name</label>
+                        <input type="text" id="middleName" name="middleName">
+                    </div>
+                    <div class="form-group">
+                        <label for="suffix">Suffix</label>
+                        <input type="text" id="suffix" name="suffix" placeholder="Leave blank if none">
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="username">Email</label>
+                    <input type="email" id="username" name="username" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" 
+                                pattern="(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}"
+                                title="Min 8 characters, at least 1 uppercase, 1 number, 1 special character (!@#$%^&*)"
+                                required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reenterPassword">Re-enter password</label>
+                        <input type="password" id="reenterPassword" name="reenterPassword" required>
+                    </div>
+                </div>
+                <div class="form-group full-width">
+                    <label for="phoneNo">Phone No.</label>
+                    <input type="tel" id="phoneNo" name="phoneNo" maxlength="11" pattern="[0-9]{11}" value="09" required>
+                </div>
+                <div class="form-group full-width">
+                    <label for="brgyPosition">Position</label>
+                    <div class="select-wrapper">
+                        <select id="brgyPosition" name="brgyPosition" required>
+                            <option value="" disabled selected>Select a position</option>
+                            <option id="adminOption" value="admin">Admin</option>
+                            <option value="user">User</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- Admin Passcode Box -->
+                <div id="adminPasscodeContainer" class="form-group full-width force-hide">
+                    <label for="adminPasscode" class="text-danger fw-bold">Create Master Admin PIN</label>
+                    <!-- NEW: Added inputmode and pattern for mobile keyboards -->
+                    <input type="password" id="adminPasscode" name="adminPasscode" placeholder="Set a 6-digit PIN" maxlength="6" inputmode="numeric" pattern="[0-9]*">
+                </div>
+
+                <button type="submit" class="btn-custom-green register-btn-spacing">Register</button>
+            </form>
+            
+            <div class="footer-link">
+                Go back to <a href="login.html">Log in page</a>
+            </div>
+        </div>
+    </div>
+    <!-- Toast styles -->
+<style>
+    .toast-notification {
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 16px 20px;
+        margin-bottom: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 300px;
+        animation: slideIn 0.3s ease-in-out;
+    }
+
+    .toast-notification.success {
+        border-left: 4px solid #10B981;
+        background-color: #f0fdf4;
+    }
+
+    .toast-notification.error {
+        border-left: 4px solid #dc3545;
+        background-color: #fef2f2;
+    }
+
+    .toast-notification.warning {
+        border-left: 4px solid #f59e0b;
+        background-color: #fffbf0;
+    }
+
+    .toast-notification.info {
+        border-left: 4px solid #3b82f6;
+        background-color: #f0f9ff;
+    }
+
+    .toast-icon {
+        font-size: 20px;
+        flex-shrink: 0;
+    }
+
+    .toast-message {
+        flex: 1;
+        color: #333;
+        font-weight: 500;
+    }
+
+    .toast-close {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 18px;
+        color: #999;
+        padding: 0;
+    }
+
+    .toast-close:hover {
+        color: #333;
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+    }
+
+    .toast-notification.hide {
+        animation: slideOut 0.3s ease-in-out forwards;
+    }
+</style><!-- Toast Notification Container -->
+<div id="toastContainer" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
+    <script src="../js/api.js"></script>
+    <script src="../js/register.js"></script>
+    <script src="../js/notification.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Reports - SCMS</title>
+    <link rel="icon" type="image/png" href="/assets/brgy-logo.PNG">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/view-reports.css">
+</head>
+<body>
+
+    <div class="app-wrapper">
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <aside class="sidebar collapsed" id="sidebar">
+            <div class="sidebar-brand">
+                <img src="../assets/brgy-logo.PNG" alt="Barangay Logo" class="brand-logo">
+                <span>SCMS</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item"><i class="fas fa-th-large"></i> Dashboard Overview</a>
+                <a href="user-profile.html" class="nav-item"><i class="far fa-address-card"></i> User Profile</a>
+                <a href="input-report.html" class="nav-item"><i class="fas fa-edit"></i> Input a report</a>
+                <a href="view-reports.html" class="nav-item active"><i class="far fa-folder-open"></i> View Reports</a>
+                <a href="admin.html" class="nav-item"><i class="fas fa-user-plus"></i> Admin</a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="#" class="btn btn-logout w-100">Log Out</a>
+            </div>
+        </aside>
+
+        <div class="main-content" id="mainContent">
+            <header class="top-header d-flex align-items-center gap-3">
+                <button id="sidebarToggleBtn" class="btn text-white p-0 border-0 fs-5">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <span class="header-title">SCMS - Barangay San Gabriel | Senior Citizen Database</span>
+            </header>
+            
+            <main class="page-content bg-logo-pattern pt-5">
+                <div id="tableView" class="reports-container px-4 mx-auto">
+                                    
+                    <div class="reports-panel">
+                        <h4 class="reports-panel-title">Reports</h4>
+                        
+                        <div class="d-flex gap-2 mb-3">
+                            <input type="text" id="reportSearchInput" class="form-control search-bar-reports" placeholder="Search by name or benefit...">
+                        </div>
+                        
+                        <div class="table-responsive reports-table-wrapper">
+                            <table class="table custom-reports-table">
+                                <thead>
+                                    <tr>
+                                        <th class="col-r-name">Name</th>
+                                        <th class="col-r-benefit">Benefit/s</th>
+                                        <th class="col-r-datetime">Date / Time</th>
+                                        <th class="col-r-given">Given by</th>
+                                        <th class="col-r-proof">Proof</th>
+                                        <th class="col-r-action">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reportsTableBody">
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="reportModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content border-0 shadow-lg">
+                            <div class="modal-body p-4 text-start">
+                                
+                                <div class="d-flex justify-content-end mb-2">
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                
+                                <div class="text-center mb-4">
+                                    <div class="report-modal-photo mx-auto">Proof Photo</div>
+                                </div>
+                                
+                                <h6 class="text-muted border-bottom pb-2 mb-3">Report Details</h6>
+                                
+                                <div class="d-flex mb-2">
+                                    <span class="text-muted report-detail-label">Name:</span> 
+                                    <span class="text-dark fw-bold" id="detailReportName"></span>
+                                </div>
+                                <div class="d-flex mb-2">
+                                    <span class="text-muted report-detail-label">Benefit/s Type:</span> 
+                                    <span class="text-dark fw-bold" id="detailReportBenefit"></span>
+                                </div>
+                                <div class="d-flex mb-2">
+                                    <span class="text-muted report-detail-label">Description:</span> 
+                                    <span class="text-dark fw-bold" id="detailReportDesc"></span>
+                                </div>
+                                <div class="d-flex mb-2">
+                                    <span class="text-muted report-detail-label">Date Received:</span> 
+                                    <span class="text-dark fw-bold" id="detailReportDate"></span>
+                                </div>
+                                <div class="d-flex mb-2">
+                                    <span class="text-muted report-detail-label">Time Received:</span> 
+                                    <span class="text-dark fw-bold" id="detailReportTime"></span>
+                                </div>
+                                <div class="d-flex mb-2">
+                                    <span class="text-muted report-detail-label">Remarks:</span> 
+                                    <span class="text-dark fw-bold" id="detailReportRemarks"></span>
+                                </div>
+
+                            </div>
+                            
+                            <div class="modal-footer border-0 d-flex justify-content-between px-4 pb-4 pt-0">
+                                <button type="button" class="btn btn-danger" id="btnDeleteReport">
+                                    <i class="fas fa-trash-alt me-1"></i> Delete Report
+                                </button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+
+                        </div> 
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <div id="toastContainer" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
+
+    <script src="../js/api.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/sidebar.js"></script>
+    <script src="../js/view-reports.js"></script>
+    <script src="../js/notification.js"></script>
+</body>
+</html>

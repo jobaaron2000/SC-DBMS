@@ -1,0 +1,142 @@
+/* =========================================
+   Admin Page Layout & Container
+   ========================================= */
+   .admin-container {
+    max-width: 1100px;
+}
+
+.admin-panel {
+    background-color: #f7f6f3;
+    padding: 40px;
+    border-radius: 8px;
+    min-height: 80vh;
+    position: relative;
+}
+
+/* =========================================
+   Top Profile Section
+   ========================================= */
+.admin-info-row {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 25px;
+}
+
+.admin-label {
+    min-width: 120px;
+    color: #333;
+    font-size: 15px;
+}
+
+/* Creates the solid black underline effect */
+.admin-value {
+    flex-grow: 1;
+    border-bottom: 1px solid #000;
+    min-height: 25px; 
+    max-width: 350px; /* Prevents the line from stretching too far right */
+}
+
+/* The big square photo box with user icon */
+.admin-photo-box {
+    width: 120px;
+    height: 120px;
+    border: 1px solid #333;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px; /* Makes the FontAwesome icon huge */
+    color: #333;
+}
+
+.admin-photo-label {
+    font-size: 12px;
+    color: #333;
+}
+
+/* Solid divider matching the mockup */
+.admin-divider {
+    border-top: 1px solid #000;
+    opacity: 1;
+    margin: 40px 0;
+}
+
+/* =========================================
+   Users Table Section
+   ========================================= */
+.admin-table {
+    margin-bottom: 0;
+}
+
+/* Header has a solid black bottom border, no background color */
+.admin-table th {
+    border-bottom: 1px solid #000;
+    font-weight: 500;
+    color: #333;
+    padding-bottom: 10px;
+}
+
+.admin-table td {
+    padding: 15px 10px;
+    color: #333;
+    border-bottom: none; /* No row borders in this specific design */
+}
+
+.admin-status-active {
+    color: #10B981; /* Brand green */
+}
+
+/* Action Buttons (Enable / Disable) */
+.btn-action-enable {
+    background-color: #10B981;
+    color: white;
+    font-size: 11px;
+    padding: 3px 12px;
+    border-radius: 4px;
+    border: none;
+}
+
+.btn-action-disable {
+    background-color: #ef4444;
+    color: white;
+    font-size: 11px;
+    padding: 3px 12px;
+    border-radius: 4px;
+    border: none;
+}
+
+.btn-action-enable:hover, .btn-action-disable:hover {
+    opacity: 0.9;
+    color: white;
+}
+
+/* Short Remarks Input (Underline only) */
+.admin-remarks-input {
+    border: none;
+    border-bottom: 1px solid #000;
+    background-color: transparent;
+    width: 100%;
+    outline: none;
+    padding-bottom: 2px;
+}
+
+.admin-remarks-input:focus {
+    border-bottom: 2px solid #10B981; /* Highlights green when typing */
+}
+
+/* =========================================
+   Bottom Controls
+   ========================================= */
+.btn-change-password {
+    background-color: #10B981;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+.btn-change-password:hover {
+    background-color: #059669;
+    color: white;
+}

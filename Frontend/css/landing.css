@@ -1,0 +1,184 @@
+/* =========================================
+   Landing Page Styles
+   ========================================= */
+
+.landing-wrapper {
+    /* Make sure background is transparent so the body's photo shows through! */
+    background-color: transparent; 
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.landing-content {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    padding: 50px 40px;
+    max-width: 450px;
+    width: 100%;
+    text-align: center;
+}
+
+.landing-header {
+    margin-bottom: 40px;
+}
+
+.landing-logo {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+    margin-bottom: 20px;
+}
+
+.landing-header h1 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 5px;
+}
+
+.landing-subtitle {
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+}
+
+/* PIN Section */
+.pin-section {
+    margin-bottom: 30px;
+}
+
+.pin-section h3 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 8px;
+}
+
+.pin-hint {
+    font-size: 13px;
+    color: #999;
+    margin-bottom: 25px;
+}
+
+.pin-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* 1. The Container */
+.pin-input-group {
+    position: relative; /* This is the anchor for the absolute button */
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+/* 2. The Text Box */
+.pin-input {
+    width: 100%;
+    padding: 12px 45px 12px 15px; /* Extra padding on the right (45px) so numbers don't hide behind the icon */
+    text-align: center; /* Keeps the PIN dots centered */
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-size: 24px;
+    letter-spacing: 8px; /* Makes the PIN dots nicely spaced */
+    background-color: #fff;
+}
+
+/* 3. The Eye Button inside the box */
+.pin-toggle {
+    position: absolute;
+    right: 15px; /* Distance from the right edge */
+    top: 50%; /* Pushes it halfway down */
+    transform: translateY(-50%); /* Pulls it exactly into the vertical center */
+    
+    background: transparent;
+    border: none;
+    color: #6c757d; /* Standard muted gray */
+    cursor: pointer;
+    font-size: 18px;
+    padding: 0;
+    
+    /* Helps center the icon inside the invisible button */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pin-toggle:hover {
+    color: #333; /* Darkens slightly when hovered */
+}
+
+.pin-toggle:hover {
+    color: #333;
+}
+
+.pin-error {
+    color: #dc3545;
+    font-size: 13px;
+    padding: 10px;
+    background-color: #fef2f2;
+    border-left: 3px solid #dc3545;
+    border-radius: 4px;
+    text-align: left;
+    margin-top: -10px;
+}
+
+.pin-error.d-none {
+    display: none;
+}
+
+.btn-pin {
+    padding: 12px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.btn-pin:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-pin:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.pin-footer {
+    font-size: 12px;
+    margin: 0;
+    margin-top: 15px;
+}
+
+.landing-footer {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+    font-size: 12px;
+    color: #999;
+    margin-top: 30px;
+}
+
+.landing-footer p {
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .landing-content {
+        padding: 30px 20px;
+    }
+
+    .landing-header h1 {
+        font-size: 22px;
+    }
+
+    .landing-logo {
+        width: 100px;
+        height: 100px;
+    }
+}

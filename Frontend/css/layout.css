@@ -1,0 +1,157 @@
+/* =========================================
+   MODAL SIDEBAR & OVERLAY STYLES
+   ========================================= */
+
+/* 1. The Dark Background Overlay */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* The dark tint */
+    z-index: 1040; /* Sits right underneath the sidebar */
+    
+    /* Hidden by default with smooth fade-in */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+/* When active, the dark background appears */
+.sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* --- Sidebar Styling --- */
+.sidebar {
+    position: fixed; /* FIX: This makes it float over the page */
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 250px; /* Fixed width */
+    background-color: #ffffff;
+    box-shadow: 4px 0 15px rgba(0,0,0,0.1); /* Adds a nice drop shadow so it pops out */
+    display: flex;
+    flex-direction: column;
+    
+    /* FIX: Use transform instead of margin for much smoother, floating animation */
+    transition: transform 0.3s ease-in-out; 
+    transform: translateX(0); /* Default visible position */
+    z-index: 1050; /* Must be higher than the overlay (1040) */
+}
+
+/* Slides completely off-screen to the left */
+.sidebar.collapsed {
+    transform: translateX(-100%); 
+}
+
+/* ... keep your existing .sidebar-brand and everything else below it ... */
+.sidebar-brand {
+    background-color: var(--brand-green);
+    /* ... (rest of your file stays the same) */
+}
+/* Add this right below it to control the logo size */
+.brand-logo {
+    width: 100px; /* Adjust this to make the logo bigger or smaller */
+    height: 100px;
+    object-fit: contain;
+}
+
+.sidebar-nav {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding-top: 1rem;
+}
+
+.nav-item {
+    padding: 12px 20px;
+    color: var(--text-main);
+    text-decoration: none;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: background-color 0.2s;
+}
+
+.nav-item.active {
+    background-color: var(--brand-green);
+    color: white;
+}
+
+.nav-item:hover:not(.active) {
+    background-color: #f0f0f0;
+}
+
+.sidebar-footer {
+    padding: 20px;
+}
+
+/* --- Main Content Area --- */
+.app-wrapper {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100vh; 
+    overflow: hidden; /* Absolutely prevents this column from growing */
+}
+
+.top-header {
+    background-color: var(--brand-green);
+    color: white;
+    padding: 10px 20px;
+    height: 60px; 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 999;
+    flex-shrink: 0; 
+}
+
+.page-content {
+    flex: 1;
+    padding: 40px 60px;
+    overflow-y: auto; 
+    min-height: 0; 
+}
+
+/* =========================================
+   Custom Visible Scrollbar (Fixes Mac Hiding)
+   ========================================= */
+.page-content::-webkit-scrollbar {
+    width: 10px;
+}
+
+.page-content::-webkit-scrollbar-track {
+    background: transparent; 
+}
+
+.page-content::-webkit-scrollbar-thumb {
+    background-color: #c1c1c1; 
+    border-radius: 10px;
+    border: 2px solid var(--bg-light); /* Creates a nice padded effect */
+}
+
+.page-content::-webkit-scrollbar-thumb:hover {
+    background-color: #a8a8a8; 
+}
+
+/* =========================================
+   Responsive Mobile & Tablet Design
+   ========================================= */
+@media (max-width: 768px) {
+    .page-content {
+        padding: 20px 15px; 
+    }
+    .stat-value {
+        font-size: 24px; 
+    }
+}

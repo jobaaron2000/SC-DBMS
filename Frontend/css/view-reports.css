@@ -1,0 +1,179 @@
+/* Container to limit width on massive screens */
+.reports-container {
+    max-width: 1100px;
+}
+
+/* =========================================
+   Table View Styles
+   ========================================= */
+.report-table th {
+    border-bottom: 1px solid #333;
+    font-weight: 500;
+    color: #000;
+}
+
+.report-table td {
+    color: #333;
+    border-bottom: none; /* Removes default bootstrap inner borders */
+}
+
+.border-bottom-custom {
+    border-bottom: 1px solid #ccc;
+}
+
+/* Square Proof Thumbnail */
+.proof-box {
+    width: 45px;
+    height: 45px;
+    border: 1px solid #333;
+    background-color: transparent;
+}
+
+/* Gray View Button */
+.btn-view-action {
+    background-color: #e2e2e2;
+    color: #333;
+    border: none;
+    padding: 5px 20px;
+    font-size: 14px;
+}
+
+.btn-view-action:hover {
+    background-color: #d4d4d4;
+}
+
+.btn-action-back:hover {
+    background-color: #dde0e3;
+}
+/* =========================================
+   Modal Specific Styles
+   ========================================= */
+
+/* Square Photo Placeholder for Modal */
+.report-modal-photo {
+    width: 200px;
+    height: 200px;
+    border: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+/* Detail Labels (Locks width for perfect alignment) */
+.report-detail-label {
+    min-width: 140px;
+}
+/* =========================================
+   Table View Styles (Masterlist Match)
+   ========================================= */
+
+/* The outer white card */
+.reports-panel {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.reports-panel-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Search and Filter Row */
+.search-bar-reports {
+    max-width: 300px;
+    padding: 8px 12px !important;
+    font-size: 14px !important;
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+}
+
+.filter-select-reports {
+    width: auto;
+    cursor: pointer;
+}
+
+/* Table Wrapper (Adds scrolling and matches height limit) */
+.reports-table-wrapper {
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: auto;
+    border-radius: 8px;
+}
+
+/* Main Table Setup */
+.custom-reports-table {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+/* Forces text to single line */
+.custom-reports-table th, 
+.custom-reports-table td {
+    white-space: nowrap; 
+}
+
+/* Sticky Header styling */
+.custom-reports-table th {
+    background-color: #e2e2e2;
+    color: #333;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 10px 12px;
+    border-bottom: 1px solid #dee2e6;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+/* Cell styling */
+.custom-reports-table td {
+    padding: 10px 12px;
+    font-size: 13px;
+    vertical-align: middle;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* Specific Column Widths */
+.custom-reports-table .col-r-name { width: 25%; }
+.custom-reports-table .col-r-benefit { width: 15%; }
+.custom-reports-table .col-r-datetime { width: 20%; }
+.custom-reports-table .col-r-given { width: 20%; }
+.custom-reports-table .col-r-proof { width: 10%; }
+.custom-reports-table .col-r-action { width: 10%; }
+
+/* Small Image Placeholder */
+.proof-box {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ccc;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
+
+/* Action Button */
+.btn-view-action {
+    background-color: #e9ecef;
+    border: 1px solid #adb5bd;
+    border-radius: 5px;
+    padding: 4px 10px;
+    font-size: 12px;
+    color: #333;
+    cursor: pointer;
+}
+
+.btn-view-action:hover {
+    background-color: #dde0e3;
+}

@@ -1,0 +1,120 @@
+/* Custom row alignment to match the mockup */
+.form-row-custom {
+    display: flex;
+    align-items: center;
+}
+
+.form-label-custom {
+    min-width: 160px; /* Changed to min-width so it never squishes! */
+    font-size: 16px;
+    color: #000;
+    margin-bottom: 0;
+    white-space: nowrap; /* Prevents the label from wrapping to two lines */
+}
+.custom-input-box {
+    border: 1px solid #6c757d;
+    border-radius: 5px; 
+    padding: 8px 15px;  
+    font-size: 14px;
+}
+.custom-input-box::placeholder {
+    color: #adb5bd;
+    font-size: 13px;
+
+}
+
+.form-control.rounded-pill {
+    border: 1px solid #6c757d;
+    padding: 8px 20px;
+    font-size: 14px;
+}
+
+.form-control.rounded-pill::placeholder {
+    color: #adb5bd;
+    font-size: 13px;
+    text-align: center; /* Center the placeholder text */
+}
+
+/* Upload Box Styling */
+.upload-box {
+    border: 1px solid #333;
+    height: 300px;
+    background-color: transparent;
+    border-radius: 4px;
+    padding: 20px;
+    text-align: center;
+}
+
+.upload-box.dragover {
+    background-color: #e9ecef;
+    border: 2px dashed #10B981; /* Turns green when dragging a file over it */
+}
+
+.upload-box span {
+    font-size: 14px;
+    color: #333 !important;
+}
+
+#btnBrowse {
+    background-color: #e2e2e2;
+    color: #333;
+    border: none;
+    font-weight: 500;
+}
+
+#btnBrowse:hover {
+    background-color: #d4d4d4;
+}
+
+
+.btn-save-custom {
+    width: auto !important;
+    display: inline-block;
+}
+
+/* Constrains the form width on large screens */
+.report-container {
+    max-width: 1000px;
+}
+
+/* Perfectly centers the search icon inside the input box */
+.search-icon-custom {
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+/* =========================================
+   Autocomplete Dropdown Styles
+   ========================================= */
+   .search-results-dropdown {
+    position: absolute;
+    top: 100%; /* Positions it right below the textbox */
+    left: 0;
+    right: 0;
+    background-color: #ffffff;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    max-height: 150px; /* Prevents it from getting too long */
+    overflow-y: auto;
+    z-index: 1000; /* Forces it to hover above the other input boxes */
+    list-style: none;
+    padding: 0;
+    margin: 5px 0 0 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.search-result-item {
+    padding: 8px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    color: #333;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-item:hover {
+    background-color: #e9ecef;
+}
