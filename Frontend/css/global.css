@@ -22,7 +22,7 @@
 
 /* 2. Style A: The Repeating Logo (For Dashboards & Data) */
 .bg-logo-pattern::after {
-    background-image: url('/Frontend/assets/brgy-logo.png');
+    background-image: url('/Frontend/assets/brgy-logo.PNG');
     background-repeat: repeat;
     background-size: 200px; /* Adjust this to make the logos larger or smaller in the pattern */
     opacity: 0.03; /* Very faint so it never blocks text */
