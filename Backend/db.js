@@ -1,13 +1,15 @@
-// Load environment variables first
-import 'dotenv/config'; 
-import postgres from 'postgres';
+// Load environment variables
+require('dotenv').config(); 
+
+// Use 'require' instead of 'import' to match your server.js
+const postgres = require('postgres');
 
 const connectionString = process.env.DATABASE_URL;
 
-// The postgres package automatically connects and handles connection pooling for you
+// Initialize the Supabase connection
 const sql = postgres(connectionString);
 
 console.log('✅ Connected to PostgreSQL Database');
 
-// Export it for use in your other files
-export default sql;
+// Use 'module.exports' instead of 'export default'
+module.exports = sql;
