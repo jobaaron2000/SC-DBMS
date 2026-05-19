@@ -1,15 +1,32 @@
-// Load environment variables
-require('dotenv').config(); 
+const sql = require('mssql');
+require('dotenv').config();
 
-// Use 'require' instead of 'import' to match your server.js
-const postgres = require('postgres');
+const config = {
+    server:   process.env.DB_SERVER   || 'localhost', 
+    port:     parseInt(process.env.DB_PORT) || 1433, 
+    database: process.env.DB_NAME     || 'SeniorCitizen_db',
+    user:     process.env.DB_USER     || 'sa',
+    password: process.env.DB_PASSWORD || '',
+    options: {
+        encrypt:                false,
+        trustServerCertificate: true,
+        enableArithAbort:       true,
+    },
+    pool: {
+        max:               10,
+        min:               0,
+        idleTimeoutMillis: 30000,
+    },
+};
 
-const connectionString = process.env.DATABASE_URL;
+let pool;
 
-// Initialize the Supabase connection
-const sql = postgres(connectionString);
+async function getPool() {
+    if (!pool) {
+        pool = await sql.connect(config);
+        console.log('✅ Connected to MS SQL Server:', process.env.DB_NAME);
+    }
+    return pool;
+}
 
-console.log('✅ Connected to PostgreSQL Database');
-
-// Use 'module.exports' instead of 'export default'
-module.exports = sql;
+module.exports = { getPool, sql };
