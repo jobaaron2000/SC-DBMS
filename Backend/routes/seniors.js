@@ -17,7 +17,7 @@ const csv = require('csv-parser');
 const fs = require('fs');
 
 // Set up Multer to temporarily save the uploaded file
-const csvUpload = multer({ dest: 'uploads/temp/' });
+const csvUpload = multer({ dest: process.env.NODE_ENV === 'production' ? '/tmp' : 'uploads/temp/' });
 const auth   = require('../middleware/auth');
 const upload = require('../middleware/upload');
 const path   = require('path');
