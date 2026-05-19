@@ -6,10 +6,18 @@ const path   = require('path');
 const fs     = require('fs');
 require('dotenv').config();
 
-const uploadDir = path.join(__dirname, '..', process.env.UPLOAD_DIR || 'uploads');
+// 1. Check if we are running on Vercel (Production)
+const isProduction = process.env.NODE_ENV === 'production';
 
-// Make sure the uploads folder exists
-if (!fs.existsSync(uploadDir)) {
+// 2. If on Vercel, route uploads to the allowed '/tmp' folder. 
+// If on your local computer, use the normal 'uploads' folder.
+const uploadDir = isProduction 
+    ? '/tmp' 
+    : path.join(__dirname, '..', process.env.UPLOAD_DIR || 'uploads');
+
+// 3. Only create the folder if we are on your local computer. 
+// Vercel's /tmp folder already exists, so we don't need to create it!
+if (!isProduction && !fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }
 
