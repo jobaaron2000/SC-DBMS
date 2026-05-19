@@ -60,3 +60,15 @@ app.listen(PORT, () => {
     console.log(`🚀 SCMS Server running at http://localhost:${PORT}`);
     console.log(`📁 Uploads served at  http://localhost:${PORT}/uploads`);
 });
+// Keep your existing app.listen for local testing, 
+// but add a check so it doesn't crash on Vercel
+if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+}
+
+// THIS IS THE CRITICAL LINE FOR VERCEL
+export default app; 
+// (Note: If you reverted to CommonJS instead of ES Modules earlier, use: module.exports = app;)
