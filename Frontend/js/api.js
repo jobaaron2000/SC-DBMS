@@ -3,7 +3,7 @@
 // Include this script BEFORE any page-specific JS
 // ============================================
 
-const API_BASE = 'https://sc-dbms-backend.vercel.app';  // Change to your server URL in production
+const API_BASE = 'https://sc-dbms-backend.vercel.app/api';  // Change to your server URL in production
 
 // ---- Token helpers ----
 function getToken() {
