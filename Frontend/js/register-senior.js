@@ -39,12 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
                 btnSubmit.disabled = true;
 
-                // Send to backend WITH THE TOKEN
-                const response = await fetch('http://localhost:3000/api/seniors', {
+                // Send to backend using the global API_BASE variable
+                const response = await fetch(`${API_BASE}/seniors`, {
                     method: 'POST',
                     headers: { 
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${getToken()}` // <--- FIX: Added the Token here!
+                        'Authorization': `Bearer ${getToken()}` 
                     },
                     body: JSON.stringify(newSenior)
                 });
@@ -106,12 +106,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 btnUploadCsv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
                 btnUploadCsv.disabled = true;
 
-                // Send to the backend WITH THE TOKEN
-                const response = await fetch('http://localhost:3000/api/seniors/bulk-upload', {
+                // Send to the backend using the global API_BASE variable
+                const response = await fetch(`${API_BASE}/seniors/bulk-upload`, {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${getToken()}` // <--- FIX: Added the Token here too!
-                        // Do NOT add 'Content-Type' for FormData, let the browser handle it.
+                        'Authorization': `Bearer ${getToken()}` 
                     },
                     body: formData 
                 });
