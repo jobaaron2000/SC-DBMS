@@ -45,7 +45,7 @@ router.get('/', auth, async (req, res) => {
         let paramIdx = 1;
 
         if (search) {
-            query += ` AND (full_name ILIKE $${paramIdx} OR osca_id ILIKE $${paramIdx} OR address ILIKE $${paramIdx})`;
+            query += ` AND (full_name ILIKE $${paramIdx} OR osca_id::TEXT ILIKE $${paramIdx} OR address ILIKE $${paramIdx})`;
             params.push(`%${search}%`);
             paramIdx++;
         }
