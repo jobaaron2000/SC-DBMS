@@ -5,13 +5,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (!getToken()) { window.location.href = 'landing.html'; return; }
 
-    // ---- Auto-fill "Given By" from logged-in user ----
-    const currentUser  = getCurrentUser();
-    const givenByInput = document.getElementById('reportGivenBy');
-    if (currentUser && givenByInput) {
-        givenByInput.value = currentUser.fullName;
-    }
-
     // ---- Photo Upload UI ----
     const btnBrowse  = document.getElementById('btnBrowse');
     const fileInput  = document.getElementById('reportPhoto');
@@ -103,12 +96,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             const formData = new FormData();
-            formData.append('senior_id',   selectedSeniorId);
-            formData.append('benefit',     document.getElementById('reportBenefit').value);
-            formData.append('description', document.getElementById('reportDescription').value);
-            formData.append('received_at', document.getElementById('reportDate').value);
-            formData.append('remarks',     document.getElementById('reportRemarks').value || '');
-            formData.append('proof_photo', fileInput.files[0]);
+                    formData.append('senior_id',   selectedSeniorId);
+                    formData.append('benefit',     document.getElementById('reportBenefit').value);
+                    formData.append('description', document.getElementById('reportDescription').value);
+                    formData.append('received_at', document.getElementById('reportDate').value);
+                    formData.append('remarks',     document.getElementById('reportRemarks').value || '');
+
+                    // Add this new line right here!
+                    formData.append('given_by',    document.getElementById('reportGivenBy').value); 
+
+                    formData.append('proof_photo', fileInput.files[0]);
 
             const btn = reportForm.querySelector('button[type="submit"]');
             btn.disabled    = true;
