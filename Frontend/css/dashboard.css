@@ -337,55 +337,55 @@
     cursor: not-allowed;
 }
 /* ========================================================= */
-/* PRINT STYLES - Fixes table overlapping and PDF formatting */
+/* PRINT STYLES - Isolates the table and fixes overlapping   */
 /* ========================================================= */
 @media print {
-    /* 1. Remove browser headers (URL) and footers (Date) */
+    /* 1. Hide EVERY single element on the page by default */
+    body * {
+        visibility: hidden;
+    }
+
+    /* 2. Un-hide ONLY the printArea and everything inside it */
+    #printArea, #printArea * {
+        visibility: visible;
+    }
+
+    /* 3. Move the print area to the absolute top-left of the paper */
+    #printArea {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* 4. Clean up the page margins to remove the ugly browser URL/Date */
     @page {
         size: A4 portrait;
         margin: 15mm; 
     }
 
-    /* 2. Hide everything except the masterlist (Sidebars, buttons, etc.) */
-    #sidebar, .top-header, .search-bar-container, .print-btn {
-        display: none !important;
-    }
-
-    /* 3. Expand the main area to take up the full paper width */
-    .app-wrapper, .main-content, .page-content {
-        margin: 0 !important;
-        padding: 0 !important;
-        width: 100% !important;
-    }
-
-    /* 4. Fix the overlapping table text */
+    /* 5. Force the table to obey column widths and prevent overlapping */
     table {
         width: 100% !important;
-        table-layout: fixed !important; /* Forces the table to obey column widths */
+        table-layout: fixed !important;
         border-collapse: collapse !important;
     }
 
-    /* Force text to wrap inside the box instead of bleeding over */
     th, td {
         word-wrap: break-word !important; 
         white-space: normal !important;
-        overflow-wrap: break-word !important;
         padding: 8px !important;
-        font-size: 11px !important; /* Slightly smaller text for paper */
+        font-size: 11px !important;
         border-bottom: 1px solid #dee2e6 !important;
     }
 
-    /* 5. Assign specific widths to columns to prevent squishing */
+    /* 6. Assign specific widths to columns so they don't squish */
     th:nth-child(1), td:nth-child(1) { width: 12%; } /* OSCA ID */
     th:nth-child(2), td:nth-child(2) { width: 25%; } /* Name */
     th:nth-child(3), td:nth-child(3) { width: 8%; }  /* Age */
     th:nth-child(4), td:nth-child(4) { width: 35%; } /* Address (Needs the most space) */
     th:nth-child(5), td:nth-child(5) { width: 12%; } /* Contact */
     th:nth-child(6), td:nth-child(6) { width: 8%; }  /* Status */
-
-    /* 6. Force the browser to print background colors and green text */
-    * {
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-    }
 }
