@@ -59,7 +59,7 @@ router.get('/:id', auth, async (req, res) => {
 
 router.post('/', auth, upload.single('proof_photo'), async (req, res) => {
     try {
-        const { senior_id, benefit, description, received_at, remarks } = req.body;
+        const { senior_id, benefit, description, received_at, remarks, given_by} = req.body;
         if (!senior_id || !benefit || !received_at) {
             return res.status(400).json({ success: false, message: 'Required: senior_id, benefit, received_at.' });
         }
@@ -73,9 +73,17 @@ router.post('/', auth, upload.single('proof_photo'), async (req, res) => {
         }
 
         await pool.query(`
-            INSERT INTO reports (senior_id, benefit, description, received_at, given_by, remarks, proof_url)
-            VALUES ($1, $2, $3, $4, $5, $6, $7)
-        `, [parseInt(senior_id), benefit.trim(), description || null, new Date(received_at), req.user.id, remarks || null, proof_url]);
+                INSERT INTO reports (senior_id, benefit, description, received_at, given_by, remarks, proof_url)
+                VALUES ($1, $2, $3, $4, $5, $6, $7)
+            `, [
+                parseInt(senior_id), 
+                benefit.trim(), 
+                description || null, 
+                new Date(received_at), 
+                given_by ? given_by.trim() : 'Unknown', // <-- Grab the typed name here!
+                remarks || null, 
+                proof_url
+            ]);
 
         return res.status(201).json({ success: true, message: 'Report saved successfully.' });
     } catch (err) {
