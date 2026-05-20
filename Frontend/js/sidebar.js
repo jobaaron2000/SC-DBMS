@@ -3,14 +3,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggleBtn = document.getElementById('sidebarToggleBtn');
     const overlay = document.getElementById('sidebarOverlay');
 
+    // Helper function to check if the user is on a mobile phone
+    const isMobile = () => window.innerWidth <= 768;
+
     function openSidebar() {
-        if (sidebar) sidebar.classList.remove('collapsed');
-        if (overlay) overlay.classList.add('active'); 
+        if (isMobile()) {
+            // Mobile: Slide the sidebar in and show the dark overlay
+            if (sidebar) sidebar.classList.add('show');
+            if (overlay) overlay.classList.add('show'); 
+        } else {
+            // Desktop: Expand the sidebar
+            if (sidebar) sidebar.classList.remove('collapsed');
+        }
     }
 
     function closeSidebar() {
-        if (sidebar) sidebar.classList.add('collapsed');
-        if (overlay) overlay.classList.remove('active'); 
+        if (isMobile()) {
+            // Mobile: Slide the sidebar out and hide the dark overlay
+            if (sidebar) sidebar.classList.remove('show');
+            if (overlay) overlay.classList.remove('show'); 
+        } else {
+            // Desktop: Shrink the sidebar
+            if (sidebar) sidebar.classList.add('collapsed');
+        }
     }
 
     // 1. ALWAYS start closed on a new page
@@ -20,15 +35,26 @@ document.addEventListener('DOMContentLoaded', () => {
     if (toggleBtn && sidebar) {
         toggleBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            if (sidebar.classList.contains('collapsed')) {
-                openSidebar();
+            
+            if (isMobile()) {
+                // Mobile toggle check
+                if (sidebar.classList.contains('show')) {
+                    closeSidebar();
+                } else {
+                    openSidebar();
+                }
             } else {
-                closeSidebar();
+                // Desktop toggle check
+                if (sidebar.classList.contains('collapsed')) {
+                    openSidebar();
+                } else {
+                    closeSidebar();
+                }
             }
         });
     }
 
-    // 3. Handle Clicking the Dark Overlay to Close
+    // 3. Handle Clicking the Dark Overlay to Close (Mobile)
     if (overlay) {
         overlay.addEventListener('click', () => {
             closeSidebar();
@@ -42,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (adminNavLink) adminNavLink.style.display = 'none';
     }
 
-// 5. PROPER LOGOUT FUNCTIONALITY
+    // 5. PROPER LOGOUT FUNCTIONALITY
     const logoutBtn = document.querySelector('.btn-logout');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function(e) {
