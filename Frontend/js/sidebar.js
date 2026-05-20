@@ -7,24 +7,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const isMobile = () => window.innerWidth <= 768;
 
     function openSidebar() {
-        if (isMobile()) {
-            // Mobile: Slide the sidebar in and show the dark overlay
-            if (sidebar) sidebar.classList.add('show');
-            if (overlay) overlay.classList.add('show'); 
-        } else {
-            // Desktop: Expand the sidebar
-            if (sidebar) sidebar.classList.remove('collapsed');
+        if (sidebar) {
+            sidebar.classList.remove('collapsed');
+            sidebar.classList.add('show');
+        }
+        
+        // ONLY show the dark overlay on mobile screens
+        if (overlay && isMobile()) {
+            overlay.classList.add('show'); 
         }
     }
 
     function closeSidebar() {
-        if (isMobile()) {
-            // Mobile: Slide the sidebar out and hide the dark overlay
-            if (sidebar) sidebar.classList.remove('show');
-            if (overlay) overlay.classList.remove('show'); 
-        } else {
-            // Desktop: Shrink the sidebar
-            if (sidebar) sidebar.classList.add('collapsed');
+        if (sidebar) {
+            sidebar.classList.remove('show');
+            sidebar.classList.add('collapsed');
+        }
+        
+        // ALWAYS hide the dark overlay, just in case it got stuck
+        if (overlay) {
+            overlay.classList.remove('show'); 
         }
     }
 
@@ -36,25 +38,16 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleBtn.addEventListener('click', (e) => {
             e.preventDefault();
             
-            if (isMobile()) {
-                // Mobile toggle check
-                if (sidebar.classList.contains('show')) {
-                    closeSidebar();
-                } else {
-                    openSidebar();
-                }
+            // Clean toggle logic that works on both phone and laptop
+            if (sidebar.classList.contains('collapsed')) {
+                openSidebar();
             } else {
-                // Desktop toggle check
-                if (sidebar.classList.contains('collapsed')) {
-                    openSidebar();
-                } else {
-                    closeSidebar();
-                }
+                closeSidebar();
             }
         });
     }
 
-    // 3. Handle Clicking the Dark Overlay to Close (Mobile)
+    // 3. Handle Clicking the Dark Overlay to Close
     if (overlay) {
         overlay.addEventListener('click', () => {
             closeSidebar();
@@ -74,7 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
         logoutBtn.addEventListener('click', function(e) {
             e.preventDefault(); 
             
-            // TRACKING DEVICE: Check the console to see if this prints!
             console.log("Log Out button was successfully clicked!");
             
             // Destroy the digital ID cards
@@ -83,8 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
             sessionStorage.clear(); 
             
             console.log("Tokens destroyed. Redirecting now...");
-            
-            // Send the user back to the landing page
             window.location.replace('landing.html');
         });
     }
