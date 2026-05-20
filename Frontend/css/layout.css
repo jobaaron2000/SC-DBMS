@@ -148,54 +148,38 @@
 /* MOBILE RESPONSIVENESS (Screens smaller than 768px)        */
 /* ========================================================= */
 @media (max-width: 768px) {
-    /* 1. Hide Sidebar off-screen by default */
+/* 1. Force the Sidebar to the absolute top layer */
     .sidebar {
         position: fixed;
         top: 0;
         left: 0;
         height: 100vh;
-        z-index: 1050;
+        z-index: 9999 !important; /* Pushes it above EVERYTHING */
         transform: translateX(-100%);
         transition: transform 0.3s ease-in-out;
     }
 
-    /* Class added by JavaScript to slide the sidebar in */
     .sidebar.show {
         transform: translateX(0);
     }
 
-    /* 2. Make Main Content full width */
-    .main-content {
-        margin-left: 0 !important;
-        width: 100%;
-    }
-
-    /* 3. Dark Overlay behind the sidebar when it's open */
+    /* 2. Fix the Dark Overlay so it actually fades and darkens */
     .sidebar-overlay {
-        display: none;
+        visibility: hidden;
+        opacity: 0;
         position: fixed;
         top: 0;
         left: 0;
         width: 100vw;
         height: 100vh;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 1040;
+        background-color: rgba(0, 0, 0, 0.6) !important; /* The dark tint */
+        z-index: 9998 !important; /* Sits exactly 1 layer beneath the sidebar */
+        transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
     }
 
+    /* 3. The class that JavaScript triggers */
     .sidebar-overlay.show {
-        display: block;
-    }
-
-    /* 4. Shrink header text so it doesn't break the layout */
-    .header-title {
-        font-size: 1rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    /* 5. Add a little breathing room to the main page */
-    .page-content {
-        padding: 15px !important;
+        visibility: visible;
+        opacity: 1;
     }
 }
