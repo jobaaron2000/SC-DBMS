@@ -65,6 +65,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 showWarning('Please attach a proof photo before saving the report.');
                 return;
             }
+            // NEW: Prevent files larger than 4MB (Vercel's safe limit)
+            const photoFile = fileInput.files[0];
+            const maxFileSize = 4 * 1024 * 1024; // 4MB in bytes
+
+            if (photoFile.size > maxFileSize) {
+                showWarning('The photo is too large! Please choose an image smaller than 4MB.');
+                return;
+            }
 
             const formData = new FormData();
                     formData.append('senior_id',   selectedSeniorId);
