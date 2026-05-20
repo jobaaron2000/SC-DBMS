@@ -273,4 +273,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (statusFilter) {
             statusFilter.addEventListener('change', applyFilters);
         }
+// ---- Initial load ----
+    await loadStats();
+    await loadUpcomingBirthdays(); 
+    await loadSeniors();
 });
