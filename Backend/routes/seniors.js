@@ -70,7 +70,7 @@ router.get('/:id', auth, async (req, res) => {
         const pool = await getPool();
         const result = await pool.query(`
             SELECT id, osca_id, full_name, birthday, 
-                   EXTRACT(YEAR FROM age(CURRENT_DATE, birthday)) AS age, 
+                   EXTRACT(YEAR FROM age(CURRENT_DATE, birthday::DATE)) AS age, 
                    address, contact_number, guardian_name, guardian_contact, 
                    profile_photo, status, created_at 
             FROM seniors WHERE id = $1
