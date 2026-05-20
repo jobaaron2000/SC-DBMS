@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <td>${report.given_by}</td>
                 <td>
                     ${report.proof_url
-                            ? `<a href="http://localhost:3000${report.proof_url}" target="_blank"><div class="proof-box" title="View Proof">📷</div></a>`
+                            ? `<a href="https://sc-dbms-backend.vercel.app${report.proof_url}" target="_blank"><div class="proof-box" title="View Proof">📷</div></a>`
                             : `<div class="proof-box"></div>`
                     }
                 </td>
