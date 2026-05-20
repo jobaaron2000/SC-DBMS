@@ -36,7 +36,7 @@ router.get('/', auth, async (req, res) => {
         // PostgreSQL calculated age using EXTRACT
         let query = `
             SELECT id, osca_id, full_name, birthday, 
-                   EXTRACT(YEAR FROM age(CURRENT_DATE, birthday)) AS age, 
+                   EXTRACT(YEAR FROM age(CURRENT_DATE, birthday::DATE)) AS age, 
                    address, contact_number, guardian_name, guardian_contact, 
                    profile_photo, status, created_at 
             FROM seniors WHERE 1=1
@@ -86,26 +86,29 @@ router.get('/:id', auth, async (req, res) => {
 
 router.post('/', auth, upload.single('profile_photo'), async (req, res) => {
     try {
-        const { osca_id, first_name, last_name, birthday, address, contact_number, guardian_name, guardian_contact } = req.body;
+        // 1. Changed first_name and last_name to full_name
+        const { osca_id, full_name, birthday, address, contact_number, guardian_name, guardian_contact } = req.body;
 
-        if (!osca_id || !first_name || !last_name || !birthday || !address) {
+        // 2. Updated validation to check for full_name
+        if (!osca_id || !full_name || !birthday || !address) {
             return res.status(400).json({ success: false, message: 'Required fields missing.' });
         }
+        
         if (!/^[0-9\-]+$/.test(osca_id)) {
             return res.status(400).json({ success: false, message: 'OSCA ID must contain only digits and hyphens.' });
         }
 
-        const full_name = `${first_name.trim()} ${last_name.trim()}`;
         const profile_photo = req.file ? `/uploads/${req.file.filename}` : null;
         const pool = await getPool();
 
         const dup = await pool.query(`SELECT id FROM seniors WHERE osca_id = $1`, [osca_id]);
         if (dup.rows.length > 0) return res.status(409).json({ success: false, message: 'OSCA ID already exists.' });
 
+        // 3. Removed the string template since full_name is already combined
         await pool.query(`
             INSERT INTO seniors (osca_id, full_name, birthday, address, contact_number, guardian_name, guardian_contact, profile_photo)
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-        `, [osca_id.trim(), full_name, birthday, address.trim(), contact_number || null, guardian_name || null, guardian_contact || null, profile_photo]);
+        `, [osca_id.trim(), full_name.trim(), birthday, address.trim(), contact_number || null, guardian_name || null, guardian_contact || null, profile_photo]);
 
         return res.status(201).json({ success: true, message: 'Senior registered successfully.' });
     } catch (err) {
