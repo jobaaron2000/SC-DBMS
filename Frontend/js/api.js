@@ -45,10 +45,10 @@ async function apiFetch(endpoint, options = {}) {
         headers['Authorization'] = `Bearer ${token}`;
     }
 
-    const response = await fetch(`${API_BASE}${endpoint}`), {
+    const response = await fetch(`${API_BASE}${endpoint}`, {
         ...options,
         headers
-    };
+    });
 
     const data = await response.json();
 
