@@ -24,55 +24,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // ---- Autocomplete: search seniors from real API ----
-    const reportNameInput        = document.getElementById('reportName');
-    const searchResultsContainer = document.getElementById('nameSearchResults');
-    let selectedSeniorId         = null;
-
-    if (reportNameInput && searchResultsContainer) {
-        let debounceTimer;
-
-        reportNameInput.addEventListener('input', function () {
-            clearTimeout(debounceTimer);
-            const query = this.value.trim();
-            selectedSeniorId = null; // Reset when user types again
-
-            if (query.length < 2) {
-                searchResultsContainer.classList.add('d-none');
-                return;
+// ---- Load Seniors into Dropdown ----
+    const seniorSelect = document.getElementById('reportSeniorId');
+    if (seniorSelect) {
+        async function populateSeniors() {
+            // Fetch all active seniors from the Masterlist
+            const res = await apiFetch('/seniors?status=active'); 
+            
+            if (res && res.success) {
+                res.data.forEach(senior => {
+                    const option = document.createElement('option');
+                    option.value = senior.id; // This is the ID the database needs
+                    option.textContent = `${senior.full_name} (OSCA ID: ${senior.osca_id})`;
+                    seniorSelect.appendChild(option);
+                });
             }
-
-            debounceTimer = setTimeout(async () => {
-                const res = await apiFetch(`/seniors?search=${encodeURIComponent(query)}`);
-                searchResultsContainer.innerHTML = '';
-
-                if (res && res.success && res.data.length > 0) {
-                    searchResultsContainer.classList.remove('d-none');
-
-                    res.data.forEach(senior => {
-                        const li = document.createElement('li');
-                        li.className = 'search-result-item';
-                        li.innerHTML = `<span class="fw-bold">${senior.full_name}</span> <span class="text-muted small ms-1">(ID: ${senior.osca_id})</span>`;
-
-                        li.addEventListener('click', () => {
-                            reportNameInput.value  = `${senior.full_name} (${senior.osca_id})`;
-                            selectedSeniorId       = senior.id;
-                            searchResultsContainer.classList.add('d-none');
-                        });
-
-                        searchResultsContainer.appendChild(li);
-                    });
-                } else {
-                    searchResultsContainer.classList.add('d-none');
-                }
-            }, 300); // 300ms debounce
-        });
-
-        document.addEventListener('click', (e) => {
-            if (e.target !== reportNameInput && !searchResultsContainer.contains(e.target)) {
-                searchResultsContainer.classList.add('d-none');
-            }
-        });
+        }
+        populateSeniors(); // Run the function when the page loads
     }
 
     // ---- Form Submission ----
@@ -81,14 +49,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (reportForm) {
         reportForm.addEventListener('submit', async function (e) {
             e.preventDefault();
+            e.preventDefault();
 
-            // Validate a senior was actually selected from the dropdown
+            // Grab the ID directly from our new dropdown menu
+            const selectedSeniorId = document.getElementById('reportSeniorId').value;
+
+            // Validate a senior was actually selected
             if (!selectedSeniorId) {
-                showWarning('Please search for and select a senior from the dropdown list.');
-                reportNameInput.focus();
+                showWarning('Please select a senior from the dropdown list.');
+                document.getElementById('reportSeniorId').focus();
                 return;
             }
-
             // Validate proof photo
             if (!fileInput.files || fileInput.files.length === 0) {
                 showWarning('Please attach a proof photo before saving the report.');
