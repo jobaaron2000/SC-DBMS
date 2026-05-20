@@ -3,17 +3,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggleBtn = document.getElementById('sidebarToggleBtn');
     const overlay = document.getElementById('sidebarOverlay');
 
-    // Helper function to check if the user is on a mobile phone
-    const isMobile = () => window.innerWidth <= 768;
-
     function openSidebar() {
         if (sidebar) {
             sidebar.classList.remove('collapsed');
             sidebar.classList.add('show');
         }
         
-        // ONLY show the dark overlay on mobile screens
-        if (overlay && isMobile()) {
+        // FIX: Removed the mobile check! It now darkens the screen on ALL devices.
+        if (overlay) {
             overlay.classList.add('show'); 
         }
     }
@@ -24,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
             sidebar.classList.add('collapsed');
         }
         
-        // ALWAYS hide the dark overlay, just in case it got stuck
+        // ALWAYS hide the dark overlay
         if (overlay) {
             overlay.classList.remove('show'); 
         }
@@ -38,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleBtn.addEventListener('click', (e) => {
             e.preventDefault();
             
-            // Clean toggle logic that works on both phone and laptop
+            // Clean toggle logic for all devices
             if (sidebar.classList.contains('collapsed')) {
                 openSidebar();
             } else {
