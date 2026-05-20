@@ -246,18 +246,31 @@ document.addEventListener('DOMContentLoaded', async () => {
         const countElement = document.getElementById('upcomingBirthdaysCount');
         if (countElement) countElement.textContent = upcomingCount;
     }
-    // ---- Search & Filter Actions ----
-    function applyFilters() {
-        const search = document.getElementById('searchInput')?.value || '';
-        const status = document.getElementById('statusFilter')?.value || 'All';
-        loadSeniors(search, status);
-    }
+    // ---- Search & Filter Actions (Upgraded with Debounce) ----
+        let searchTimeout;
 
-    document.getElementById('searchInput')?.addEventListener('input', applyFilters);
-    document.getElementById('statusFilter')?.addEventListener('change', applyFilters);
+        function applyFilters() {
+            clearTimeout(searchTimeout); // Reset the timer on every keystroke
+            
+            // Wait 300ms after the user stops typing before asking the server
+            searchTimeout = setTimeout(() => {
+                const search = document.getElementById('searchInput')?.value || '';
+                const status = document.getElementById('statusFilter')?.value || 'All';
+                loadSeniors(search, status);
+            }, 300); 
+        }
 
-// ---- Initial load ----
-    await loadStats();
-    await loadUpcomingBirthdays(); // <-- NEW: Calculates birthdays on load
-    await loadSeniors();
+        const searchInput = document.getElementById('searchInput');
+        const statusFilter = document.getElementById('statusFilter');
+
+        // Attach listeners and add a console warning if the HTML ID is wrong
+        if (searchInput) {
+            searchInput.addEventListener('input', applyFilters);
+        } else {
+            console.warn("⚠️ Cannot find 'searchInput' in the HTML!");
+        }
+
+        if (statusFilter) {
+            statusFilter.addEventListener('change', applyFilters);
+        }
 });
