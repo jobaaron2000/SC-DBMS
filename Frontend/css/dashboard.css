@@ -336,38 +336,56 @@
     opacity: 0.5;
     cursor: not-allowed;
 }
-/* =========================================
-   PRINT / PDF STYLES
-   ========================================= */
+/* ========================================================= */
+/* PRINT STYLES - Fixes table overlapping and PDF formatting */
+/* ========================================================= */
 @media print {
-    /* Hide everything on the page by default */
-    body * {
-        visibility: hidden;
-    }
-    
-    /* Make only the masterlist container and its contents visible */
-    .panel-card, .panel-card * {
-        visibility: visible;
-    }
-    
-    /* Reposition the table to the top-left of the paper */
-    .panel-card {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        margin: 0;
-        padding: 0;
-        box-shadow: none;
-        border: none;
+    /* 1. Remove browser headers (URL) and footers (Date) */
+    @page {
+        size: A4 portrait;
+        margin: 15mm; 
     }
 
-    /* Hide UI elements that shouldn't be printed */
-    .search-bar, 
-    .filter-select, 
-    #btnPrintMasterlist, 
-    .col-action, 
-    td:last-child { /* Hides the actual buttons in the action column */
+    /* 2. Hide everything except the masterlist (Sidebars, buttons, etc.) */
+    #sidebar, .top-header, .search-bar-container, .print-btn {
         display: none !important;
+    }
+
+    /* 3. Expand the main area to take up the full paper width */
+    .app-wrapper, .main-content, .page-content {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+    }
+
+    /* 4. Fix the overlapping table text */
+    table {
+        width: 100% !important;
+        table-layout: fixed !important; /* Forces the table to obey column widths */
+        border-collapse: collapse !important;
+    }
+
+    /* Force text to wrap inside the box instead of bleeding over */
+    th, td {
+        word-wrap: break-word !important; 
+        white-space: normal !important;
+        overflow-wrap: break-word !important;
+        padding: 8px !important;
+        font-size: 11px !important; /* Slightly smaller text for paper */
+        border-bottom: 1px solid #dee2e6 !important;
+    }
+
+    /* 5. Assign specific widths to columns to prevent squishing */
+    th:nth-child(1), td:nth-child(1) { width: 12%; } /* OSCA ID */
+    th:nth-child(2), td:nth-child(2) { width: 25%; } /* Name */
+    th:nth-child(3), td:nth-child(3) { width: 8%; }  /* Age */
+    th:nth-child(4), td:nth-child(4) { width: 35%; } /* Address (Needs the most space) */
+    th:nth-child(5), td:nth-child(5) { width: 12%; } /* Contact */
+    th:nth-child(6), td:nth-child(6) { width: 8%; }  /* Status */
+
+    /* 6. Force the browser to print background colors and green text */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
     }
 }
