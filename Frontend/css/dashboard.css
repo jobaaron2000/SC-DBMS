@@ -337,59 +337,81 @@
     cursor: not-allowed;
 }
 /* ========================================================= */
-/* PRINT STYLES - Multi-page support and clean formatting    */
+/* PRINT STYLES - Clean PDF Export (No Blank Pages)          */
 /* ========================================================= */
 @media print {
-    /* 1. Hide UI elements (Sidebar, Header, Search, Buttons) */
-    #sidebar, 
-    .top-header, 
-    .search-bar-container,
-    .print-btn,
-    .btn,          /* Hides all buttons */
-    input,         /* Hides the search bar */
-    select         /* Hides the status dropdown */
-    {
-        display: none !important;
+    /* 1. Reset everything to prevent blank page generation */
+    html, body {
+        height: auto !important;
+        overflow: visible !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: white !important;
     }
 
-    /* 2. Hide the "Action" column and "View Profile" buttons */
+    /* 2. Hide absolutely everything by default */
+    body * {
+        visibility: hidden !important;
+    }
+
+    /* 3. UNHIDE ONLY the Print Area and its children */
+    #printArea, #printArea * {
+        visibility: visible !important;
+    }
+
+    /* 4. Force the Print Area to the absolute top-left corner */
+    #printArea {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+    }
+
+    /* 5. SPECIFICALLY hide stubborn dashboard elements inside the print area */
+    .search-bar-container,
+    .print-btn,
+    button,
+    input,
+    select,
+    .action-column /* Assuming your last column has a class, otherwise see #6 */
+    {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* 6. Hide the "Action" column (The View Profile buttons) */
     th:last-child, 
     td:last-child {
         display: none !important;
     }
 
-    /* 3. UNLOCK the heights so the browser can create multiple pages! */
-    html, body, .app-wrapper, .main-content, .page-content, #printArea {
-        height: auto !important;
-        min-height: auto !important;
-        overflow: visible !important;
-        position: static !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        display: block !important;
-    }
-
-    /* 4. Clean up the page margins to remove the browser URL/Date */
+    /* 7. Remove browser headers (URL) and footers (Date) entirely */
     @page {
         size: A4 portrait;
         margin: 15mm; 
     }
 
-    /* 5. Force table widths and allow page breaking */
+    /* 8. Table Formatting for Multi-Page Support */
     table {
         width: 100% !important;
         table-layout: fixed !important;
         border-collapse: collapse !important;
-        page-break-inside: auto !important; /* Tells the browser it's okay to break the table */
+        margin-top: 10px !important;
+        page-break-inside: auto !important; 
     }
 
-    /* Prevent a single row of text from being sliced in half between pages */
+    /* Prevent rows from splitting across pages */
     tr {
-        page-break-inside: avoid !important; 
+        page-break-inside: avoid !important;
         page-break-after: auto !important;
     }
 
-    /* 6. Formatting the text inside the cells */
+    /* Format table cells */
     th, td {
         word-wrap: break-word !important; 
         white-space: normal !important;
@@ -398,10 +420,10 @@
         border-bottom: 1px solid #dee2e6 !important;
     }
 
-    /* 7. Assign specific widths to columns so they don't squish */
+    /* 9. Column Width Distribution */
     th:nth-child(1), td:nth-child(1) { width: 15%; } /* OSCA ID */
     th:nth-child(2), td:nth-child(2) { width: 30%; } /* Name */
     th:nth-child(3), td:nth-child(3) { width: 10%; } /* Age */
     th:nth-child(4), td:nth-child(4) { width: 35%; } /* Address */
-    th:nth-child(5), td:nth-child(5) { width: 10%; } /* Status (Contact is hidden if it's the last column, adjust if needed) */
+    th:nth-child(5), td:nth-child(5) { width: 10%; } /* Status */
 }
