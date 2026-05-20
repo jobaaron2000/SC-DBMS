@@ -165,7 +165,7 @@ router.post('/forgot-password', async (req, res) => {
         if (!user) return res.json({ success: true, message: 'If that email exists, a reset link has been sent.' });
 
         const resetToken = jwt.sign({ id: user.id, email, type: 'reset' }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        console.log(`Password reset link for ${email}: http://localhost:3000/reset-password?token=${resetToken}`);
+        console.log(`Password reset link for ${email}: https://sc-dbms-5si1.vercel.app/reset-password?token=${resetToken}`);
 
         return res.json({ success: true, message: 'If that email exists, a reset link has been sent.' });
     } catch (err) {
