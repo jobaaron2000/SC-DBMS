@@ -155,25 +155,35 @@ router.post('/bulk-upload', auth, csvUpload.single('csvFile'), (req, res) => {
     const errors = [];
     let rowNumber = 1;
 
-    fs.createReadStream(req.file.path)
-        .pipe(csv())
-        .on('data', (data) => {
-            rowNumber++; 
-            if (!data.OscaID || !data.FullName || !data.Birthday || !data.Address) {
-                errors.push(`Row ${rowNumber}: Missing required fields.`);
-                return;
-            }
-            results.push({
-                osca_id: data.OscaID.trim(),
-                full_name: data.FullName.trim(),
-                birthday: data.Birthday.trim(),
-                address: data.Address.trim(),
-                contact_number: data.ContactNumber ? data.ContactNumber.trim() : null,
-                guardian_name: data.GuardianName ? data.GuardianName.trim() : null,
-                guardian_contact: data.GuardianContact ? data.GuardianContact.trim() : null,
-                status: 'active'
-            });
-        })
+        fs.createReadStream(req.file.path)
+                // 1. ADDED THIS FILTER: Strips invisible Excel characters (BOM) and spaces from headers
+                .pipe(csv({
+                    mapHeaders: ({ header }) => header.trim().replace(/^[\uFEFF\u200B]/g, '')
+                }))
+                .on('data', (data) => {
+                    rowNumber++; 
+                    
+                    // 2. ADDED A CONSOLE LOG: If it fails again, this tells us exactly what Excel did to your file!
+                    if (rowNumber === 2) {
+                        console.log("SERVER SEES THIS DATA:", data);
+                    }
+
+                    if (!data.OscaID || !data.FullName || !data.Birthday || !data.Address) {
+                        errors.push(`Row ${rowNumber}: Missing required fields.`);
+                        return;
+                    }
+                    
+                    results.push({
+                        osca_id: data.OscaID.trim(),
+                        full_name: data.FullName.trim(),
+                        birthday: data.Birthday.trim(),
+                        address: data.Address.trim(),
+                        contact_number: data.ContactNumber ? data.ContactNumber.trim() : null,
+                        guardian_name: data.GuardianName ? data.GuardianName.trim() : null,
+                        guardian_contact: data.GuardianContact ? data.GuardianContact.trim() : null,
+                        status: 'active'
+                    });
+                })
         .on('end', async () => {
             fs.unlinkSync(req.file.path); 
             try {
