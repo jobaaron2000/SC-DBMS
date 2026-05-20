@@ -58,17 +58,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (adminNavLink) adminNavLink.style.display = 'none';
     }
 
-    // 5. PROPER LOGOUT FUNCTIONALITY
+// 5. PROPER LOGOUT FUNCTIONALITY
     const logoutBtn = document.querySelector('.btn-logout');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function(e) {
             e.preventDefault(); 
             
-            console.log("Log Out button was successfully clicked!");
-            
-            // Destroy the digital ID cards
-            localStorage.removeItem('scms_token'); 
-            localStorage.removeItem('scms_user');  
+            // Destroy the session tokens
             sessionStorage.clear(); 
             
             console.log("Tokens destroyed. Redirecting now...");

@@ -5,23 +5,26 @@
 
 const API_BASE = 'https://sc-dbms-backend.vercel.app/api';
 
-// ---- Token helpers ----
-// FIXED: Changed 'scms_token' to 'token' to match your registration/login scripts!
+// ---- Token helpers (UPDATED TO SESSION STORAGE FOR SECURITY) ----
 function getToken() {
-    return localStorage.getItem('token');
+    return sessionStorage.getItem('token');
 }
+
 function saveToken(token) {
-    localStorage.setItem('token', token);
+    sessionStorage.setItem('token', token);
 }
+
 function clearSession() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('user');
 }
+
 function getCurrentUser() {
-    return JSON.parse(localStorage.getItem('user') || 'null');
+    return JSON.parse(sessionStorage.getItem('user') || 'null');
 }
+
 function saveCurrentUser(user) {
-    localStorage.setItem('user', JSON.stringify(user));
+    sessionStorage.setItem('user', JSON.stringify(user));
 }
 
 /**
@@ -46,7 +49,6 @@ async function apiFetch(endpoint, options = {}) {
         headers['Authorization'] = `Bearer ${token}`;
     }
 
-    // FIXED: The parenthesis is now correctly at the very end of the fetch block!
     const response = await fetch(`${API_BASE}${endpoint}`, {
         ...options,
         headers
