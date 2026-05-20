@@ -3,24 +3,25 @@
 // Include this script BEFORE any page-specific JS
 // ============================================
 
-const API_BASE = 'https://sc-dbms-backend.vercel.app/api';  // Change to your server URL in production
+const API_BASE = 'https://sc-dbms-backend.vercel.app/api';
 
 // ---- Token helpers ----
+// FIXED: Changed 'scms_token' to 'token' to match your registration/login scripts!
 function getToken() {
-    return localStorage.getItem('scms_token');
+    return localStorage.getItem('token');
 }
 function saveToken(token) {
-    localStorage.setItem('scms_token', token);
+    localStorage.setItem('token', token);
 }
 function clearSession() {
-    localStorage.removeItem('scms_token');
-    localStorage.removeItem('scms_user');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
 }
 function getCurrentUser() {
-    return JSON.parse(localStorage.getItem('scms_user') || 'null');
+    return JSON.parse(localStorage.getItem('user') || 'null');
 }
 function saveCurrentUser(user) {
-    localStorage.setItem('scms_user', JSON.stringify(user));
+    localStorage.setItem('user', JSON.stringify(user));
 }
 
 /**
@@ -45,6 +46,7 @@ async function apiFetch(endpoint, options = {}) {
         headers['Authorization'] = `Bearer ${token}`;
     }
 
+    // FIXED: The parenthesis is now correctly at the very end of the fetch block!
     const response = await fetch(`${API_BASE}${endpoint}`, {
         ...options,
         headers
