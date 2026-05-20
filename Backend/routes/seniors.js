@@ -51,7 +51,7 @@ router.get('/', auth, async (req, res) => {
         }
         if (status && status !== 'all') {
             query += ` AND status = $${paramIdx}`;
-            params.push(status);
+            params.push(status.toLowerCase());
             paramIdx++;
         }
         query += ` ORDER BY full_name ASC`;
