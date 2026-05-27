@@ -332,10 +332,10 @@
     cursor: not-allowed;
 }
 /* ========================================================= */
-/* PRINT STYLES - Flawless PDF Export                        */
+/* PRINT STYLES - Flawless PDF Export (Flexbox Override)     */
 /* ========================================================= */
 @media print {
-    /* 1. Reset heights to completely eliminate blank pages */
+    /* 1. Shatter the flexbox screen-lock and eliminate blank pages */
     html, body, .app-wrapper, .main-content, .page-content {
         height: auto !important;
         min-height: 0 !important;
@@ -343,10 +343,11 @@
         background: white !important;
         margin: 0 !important;
         padding: 0 !important;
+        display: block !important; /* <--- THIS IS THE MAGIC FIX */
     }
 
-    /* 2. Hide Sidebar and any missed UI elements */
-    .sidebar, .top-header, .btn-view-profile {
+    /* 2. Hide Sidebar, header, buttons, and search bar */
+    .sidebar, .top-header, .btn-view-profile, .d-print-none {
         display: none !important;
     }
 
@@ -380,7 +381,7 @@
         overflow-wrap: break-word !important;
         padding: 8px !important;
         font-size: 11px !important;
-        border: 1px solid #dee2e6 !important; /* Adding borders helps readability on paper */
+        border: 1px solid #dee2e6 !important;
     }
 
     /* 6. Enforce strict column widths using your custom classes */
