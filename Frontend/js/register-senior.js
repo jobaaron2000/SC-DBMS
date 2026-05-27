@@ -1,10 +1,68 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
-    // Helper function to safely get the token
-    const getToken = () => localStorage.getItem('token');
+    // ==========================================
+    // 1. PROHIBIT SPECIAL CHARACTERS IN NAMES
+    // ==========================================
+    // FIXED: Updated IDs to match your form submission exactly
+    const nameInputs = document.querySelectorAll('#regFirstName, #regMiddleName, #regLastName, #regGuardianName');
+
+    nameInputs.forEach(input => {
+        if (input) {
+            input.addEventListener('input', function() {
+                // Allows ONLY: Letters, spaces, hyphens, and periods
+                this.value = this.value.replace(/[^a-zA-Z\s\-.]/g, '');
+            });
+        }
+    });
 
     // ==========================================
-    // 1. MANUAL SINGLE REGISTRATION
+    // 2. LOCK THE "09" PREFIX FOR CONTACT NUMBERS
+    // ==========================================
+    // FIXED: Updated IDs to match your form submission exactly
+    const contactInputs = document.querySelectorAll('#regPhone, #regGuardianContact');
+
+    contactInputs.forEach(input => {
+        if (input) {
+            // When the user clicks into the empty box, automatically type '09'
+            input.addEventListener('focus', function() {
+                if (this.value === '') {
+                    this.value = '09';
+                }
+            });
+
+            // As the user types, aggressively enforce the rules
+            input.addEventListener('input', function() {
+                let val = this.value.replace(/\D/g, '');
+
+                if (val.length < 2) {
+                    val = '09';
+                } else if (!val.startsWith('09')) {
+                    val = '09' + val.substring(2); 
+                }
+
+                if (val.length > 11) {
+                    val = val.substring(0, 11);
+                }
+
+                this.value = val;
+            });
+
+            // Prevent the user from highlighting the whole thing and pressing Backspace
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Backspace' && this.value === '09') {
+                    e.preventDefault(); 
+                }
+            });
+        }
+    });
+
+    // ==========================================
+    // 3. SECURITY: GET TOKEN (UPDATED)
+    // ==========================================
+    // FIXED: Switched to sessionStorage to respect your auto-logout security update
+    const getToken = () => sessionStorage.getItem('token');
+
+    // ==========================================
+    // 4. MANUAL SINGLE REGISTRATION
     // ==========================================
     const registerForm = document.getElementById('registerSeniorForm');
     
@@ -56,8 +114,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     registerForm.reset(); 
                     
                     // Put the "09" back in the phone inputs after reset
-                    document.getElementById('regPhone').value = '09';
-                    document.getElementById('regGuardianContact').value = '09';
+                    const phoneInput = document.getElementById('regPhone');
+                    const guardianPhoneInput = document.getElementById('regGuardianContact');
+                    if (phoneInput) phoneInput.value = '09';
+                    if (guardianPhoneInput) guardianPhoneInput.value = '09';
                 } else {
                     showToast(data.message || "Failed to register senior. Make sure you are logged in.", "error");
                 }
@@ -74,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 2. BULK CSV UPLOAD LOGIC
+    // 5. BULK CSV UPLOAD LOGIC
     // ==========================================
     const csvFileInput = document.getElementById('csvFileInput');
     const btnUploadCsv = document.getElementById('btnUploadCsv');
@@ -126,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
 
                     csvFileInput.value = '';
-                    csvFileName.classList.add('d-none');
+                    if (csvFileName) csvFileName.classList.add('d-none');
                 } else {
                     showToast(data.message || "Upload failed. Make sure you are logged in.", "error");
                 }
