@@ -332,65 +332,69 @@
     cursor: not-allowed;
 }
 /* ========================================================= */
-/* PRINT STYLES - Flawless PDF Export (Scroll Box Fix)       */
+/* PRINT STYLES - Landscape & Anti-Clipping Fix              */
 /* ========================================================= */
 @media print {
-    /* 1. Shatter the flexbox screen-lock AND the scroll-box trap */
-    html, body, .app-wrapper, .main-content, .page-content, .masterlist-container, .panel-card, .table-responsive {
-        height: auto !important;
-        max-height: none !important; /* OVERRIDES THE 400PX SCROLL LIMIT */
-        min-height: 0 !important;
-        overflow: visible !important;
-        background: white !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        display: block !important; 
+    /* 1. Switch to Landscape to fit all 6 columns perfectly */
+    @page {
+        size: landscape;
+        margin: 10mm;
     }
 
-    /* 2. Hide Sidebar, header, buttons, dropdowns, and search bar */
-    .sidebar, .top-header, .btn-view-profile, .d-print-none,
-    #statusFilter, #btnPrintMasterlist, .search-bar {
+    /* 2. Completely shatter all screen-locks and scroll-boxes */
+    html, body, .app-wrapper, .main-content, .page-content, 
+    .masterlist-container, .panel-card, .table-responsive {
+        width: auto !important;
+        height: auto !important;
+        max-height: none !important;
+        min-height: 0 !important;
+        overflow: visible !important;
+        position: static !important;
+        display: block !important; 
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* 3. Hide all remaining UI elements */
+    .sidebar, .top-header, .btn-view-profile, .d-print-none, .sidebar-overlay {
         display: none !important;
     }
 
-    /* 3. Explicitly hide ONLY the Action column */
+    /* 4. Hide the Action column */
     .custom-table .col-action,
     .custom-table th:last-child,
     .custom-table td:last-child {
         display: none !important;
     }
 
-    /* 4. Lock the Table Layout */
+    /* 5. Lock the Table Layout */
     .custom-table {
         width: 100% !important;
         table-layout: fixed !important; 
         border-collapse: collapse !important;
         page-break-inside: auto !important;
-        margin: 0 !important;
     }
 
-    /* Prevent a single row from splitting across pages */
     .custom-table tr {
         page-break-inside: avoid !important;
         page-break-after: auto !important;
     }
 
-    /* 5. Force text to wrap downward inside its box */
+    /* 6. Formatting & Strict Widths */
     .custom-table th, 
     .custom-table td {
         white-space: normal !important; 
         word-wrap: break-word !important; 
-        overflow-wrap: break-word !important;
         padding: 8px !important;
-        font-size: 11px !important;
+        font-size: 12px !important; /* Slightly larger since we have landscape room! */
         border: 1px solid #dee2e6 !important;
     }
 
-    /* 6. Enforce strict column widths using your custom classes */
-    .custom-table .col-osca-id { width: 14% !important; }
+    /* The new landscape width distribution */
+    .custom-table .col-osca-id { width: 12% !important; }
     .custom-table .col-name { width: 25% !important; }
     .custom-table .col-age { width: 8% !important; }
-    .custom-table .col-address { width: 33% !important; }
+    .custom-table .col-address { width: 35% !important; }
     .custom-table .col-contact { width: 12% !important; }
     .custom-table .col-status { width: 8% !important; }
 }
