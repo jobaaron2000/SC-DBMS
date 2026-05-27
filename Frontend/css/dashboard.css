@@ -332,22 +332,24 @@
     cursor: not-allowed;
 }
 /* ========================================================= */
-/* PRINT STYLES - Flawless PDF Export (Flexbox Override)     */
+/* PRINT STYLES - Flawless PDF Export (Scroll Box Fix)       */
 /* ========================================================= */
 @media print {
-    /* 1. Shatter the flexbox screen-lock and eliminate blank pages */
-    html, body, .app-wrapper, .main-content, .page-content {
+    /* 1. Shatter the flexbox screen-lock AND the scroll-box trap */
+    html, body, .app-wrapper, .main-content, .page-content, .masterlist-container, .panel-card, .table-responsive {
         height: auto !important;
+        max-height: none !important; /* OVERRIDES THE 400PX SCROLL LIMIT */
         min-height: 0 !important;
         overflow: visible !important;
         background: white !important;
         margin: 0 !important;
         padding: 0 !important;
-        display: block !important; /* <--- THIS IS THE MAGIC FIX */
+        display: block !important; 
     }
 
-    /* 2. Hide Sidebar, header, buttons, and search bar */
-    .sidebar, .top-header, .btn-view-profile, .d-print-none {
+    /* 2. Hide Sidebar, header, buttons, dropdowns, and search bar */
+    .sidebar, .top-header, .btn-view-profile, .d-print-none,
+    #statusFilter, #btnPrintMasterlist, .search-bar {
         display: none !important;
     }
 
