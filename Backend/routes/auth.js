@@ -146,7 +146,7 @@ router.post('/request-otp', auth, async (req, res) => {
 router.post('/verify-landing-pin', async (req, res) => {
     try {
         const { pin } = req.body;
-        if (pin === '0000') return res.json({ success: true, message: 'PIN verified.' });
+        if (pin === '050874') return res.json({ success: true, message: 'PIN verified.' });
         return res.status(401).json({ success: false, message: 'Incorrect PIN.' });
     } catch (err) {
         return res.status(500).json({ success: false, message: 'Server error.' });
