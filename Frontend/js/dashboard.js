@@ -17,12 +17,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // ---- Load and render seniors ----
-    async function loadSeniors(search = '', status = 'All') {
+    // ---- Load and render seniors (UPDATED TO ACCEPT GENDER) ----
+    async function loadSeniors(search = '', status = 'All', gender = 'All') {
         const params = new URLSearchParams();
         if (search) params.set('search', search);
+        
         if (status !== 'All') {
             params.set('status', status === 'Deceased' ? 'deceased' : status.toLowerCase());
+        }
+        if (gender !== 'All') {
+            params.set('gender', gender);
         }
 
         const res = await apiFetch(`/seniors?${params.toString()}`);
@@ -39,7 +43,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         tableBody.innerHTML = '';
 
         if (data.length === 0) {
-            tableBody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">No seniors found.</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="7" class="text-center text-muted py-4">No seniors found.</td></tr>`;
             return;
         }
 
@@ -47,12 +51,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             const statusClass = senior.status === 'active' ? 'status-active' : 'status-deceased';
             const statusLabel = senior.status === 'active' ? 'Active' : 'Deceased';
             
-            // Format DB date into WORDS (e.g., "January 1, 1950")
             let dobStr = 'N/A';
             if (senior.date_of_birth) {
                 const dateObj = new Date(senior.date_of_birth);
                 dobStr = dateObj.toLocaleDateString('en-US', {
-                    timeZone: 'UTC', // Prevents the date from shifting backwards by 1 day
+                    timeZone: 'UTC', 
                     month: 'long',
                     day: 'numeric',
                     year: 'numeric'
@@ -63,6 +66,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             row.innerHTML = `
                 <td>${senior.osca_id}</td>
                 <td>${senior.full_name}</td>
+                <td>${senior.gender}</td>
                 <td>${dobStr}</td>
                 <td>${senior.age}</td>
                 <td class="${statusClass}">${statusLabel}</td>
@@ -136,9 +140,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         if (res && res.success) {
+            // Include the gender filter when reloading
             await loadSeniors(
                 document.getElementById('searchInput')?.value || '',
-                document.getElementById('statusFilter')?.value || 'All'
+                document.getElementById('statusFilter')?.value || 'All',
+                document.getElementById('genderFilter')?.value || 'All'
             );
             await loadStats();
 
@@ -192,7 +198,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (res && res.success) {
                 bootstrap.Modal.getInstance(document.getElementById('profileModal'))?.hide();
-                await loadSeniors();
+                
+                // Reload with current filters applied
+                await loadSeniors(
+                    document.getElementById('searchInput')?.value || '',
+                    document.getElementById('statusFilter')?.value || 'All',
+                    document.getElementById('genderFilter')?.value || 'All'
+                );
                 await loadStats();
             } else {
                 showError(res?.message || 'Failed to delete profile.');
@@ -238,22 +250,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (countElement) countElement.textContent = upcomingCount;
     }
 
-    // ---- Search & Filter Actions ----
+    // ---- Search & Filter Actions (NOW INCLUDES GENDER) ----
     let searchTimeout;
     function applyFilters() {
         clearTimeout(searchTimeout);
         searchTimeout = setTimeout(() => {
             const search = document.getElementById('searchInput')?.value || '';
             const status = document.getElementById('statusFilter')?.value || 'All';
-            loadSeniors(search, status);
+            const gender = document.getElementById('genderFilter')?.value || 'All';
+            loadSeniors(search, status, gender);
         }, 300); 
     }
 
     const searchInput = document.getElementById('searchInput');
     const statusFilter = document.getElementById('statusFilter');
+    const genderFilter = document.getElementById('genderFilter');
 
     if (searchInput) searchInput.addEventListener('input', applyFilters);
     if (statusFilter) statusFilter.addEventListener('change', applyFilters);
+    if (genderFilter) genderFilter.addEventListener('change', applyFilters);
 
     await loadStats();
     await loadUpcomingBirthdays(); 
