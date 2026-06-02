@@ -8,14 +8,14 @@ router.get('/', auth, async (req, res) => {
         const { search = '' } = req.query;
         const pool = await getPool();
         
+        // FIXED: Removed the INNER JOIN for the users table
         let query = `
             SELECT r.id, s.full_name AS senior_name, s.osca_id, r.benefit, r.description, r.remarks, r.proof_url,
                 TO_CHAR(r.received_at, 'MM/DD/YYYY') AS date,
                 TO_CHAR(r.received_at, 'HH12:MI:SS AM') AS time,
-                r.received_at, u.full_name AS given_by, r.created_at
+                r.received_at, r.given_by, r.created_at
             FROM reports r
             INNER JOIN seniors s ON s.id = r.senior_id
-            INNER JOIN users u ON u.id = r.given_by
         `;
         
         let params = [];
@@ -38,12 +38,12 @@ router.get('/', auth, async (req, res) => {
 router.get('/:id', auth, async (req, res) => {
     try {
         const pool = await getPool();
+        // FIXED: Removed the INNER JOIN for the users table here too
         const result = await pool.query(`
             SELECT r.id, s.full_name AS senior_name, s.osca_id, r.benefit, r.description, r.remarks, r.proof_url,
-                r.received_at, u.full_name AS given_by, r.created_at
+                r.received_at, r.given_by, r.created_at
             FROM reports r
             INNER JOIN seniors s ON s.id = r.senior_id
-            INNER JOIN users u ON u.id = r.given_by
             WHERE r.id = $1
         `, [parseInt(req.params.id)]);
 
@@ -80,7 +80,7 @@ router.post('/', auth, upload.single('proof_photo'), async (req, res) => {
                 benefit.trim(), 
                 description || null, 
                 new Date(received_at), 
-                given_by ? given_by.trim() : 'Unknown', // <-- Grab the typed name here!
+                given_by ? given_by.trim() : 'Unknown', 
                 remarks || null, 
                 proof_url
             ]);
