@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-// ---- Load Seniors into Dropdown ----
+    // ---- Load Seniors into Dropdown ----
     const seniorSelect = document.getElementById('reportSeniorId');
     if (seniorSelect) {
         async function populateSeniors() {
@@ -49,7 +49,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (reportForm) {
         reportForm.addEventListener('submit', async function (e) {
             e.preventDefault();
-            e.preventDefault();
 
             // Grab the ID directly from our new dropdown menu
             const selectedSeniorId = document.getElementById('reportSeniorId').value;
@@ -60,31 +59,27 @@ document.addEventListener('DOMContentLoaded', async () => {
                 document.getElementById('reportSeniorId').focus();
                 return;
             }
-            // Validate proof photo
-            if (!fileInput.files || fileInput.files.length === 0) {
-                showWarning('Please attach a proof photo before saving the report.');
-                return;
-            }
-            // NEW: Prevent files larger than 4MB (Vercel's safe limit)
-            const photoFile = fileInput.files[0];
-            const maxFileSize = 4 * 1024 * 1024; // 4MB in bytes
-
-            if (photoFile.size > maxFileSize) {
-                showWarning('The photo is too large! Please choose an image smaller than 4MB.');
-                return;
-            }
 
             const formData = new FormData();
-                    formData.append('senior_id',   selectedSeniorId);
-                    formData.append('benefit',     document.getElementById('reportBenefit').value);
-                    formData.append('description', document.getElementById('reportDescription').value);
-                    formData.append('received_at', document.getElementById('reportDate').value);
-                    formData.append('remarks',     document.getElementById('reportRemarks').value || '');
+            formData.append('senior_id',   selectedSeniorId);
+            formData.append('benefit',     document.getElementById('reportBenefit').value);
+            formData.append('description', document.getElementById('reportDescription').value);
+            formData.append('received_at', document.getElementById('reportDate').value);
+            formData.append('remarks',     document.getElementById('reportRemarks').value || '');
+            formData.append('given_by',    document.getElementById('reportGivenBy').value); 
 
-                    // Add this new line right here!
-                    formData.append('given_by',    document.getElementById('reportGivenBy').value); 
+            // Handle the optional photo
+            if (fileInput.files && fileInput.files.length > 0) {
+                const photoFile = fileInput.files[0];
+                const maxFileSize = 4 * 1024 * 1024; // 4MB in bytes
 
-                    formData.append('proof_photo', fileInput.files[0]);
+                if (photoFile.size > maxFileSize) {
+                    showWarning('The photo is too large! Please choose an image smaller than 4MB.');
+                    return;
+                }
+                
+                formData.append('proof_photo', photoFile);
+            }
 
             const btn = reportForm.querySelector('button[type="submit"]');
             btn.disabled    = true;
@@ -99,7 +94,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (res && res.success) {
                     showSuccess('Report saved successfully!');
                     reportForm.reset();
-                    selectedSeniorId      = null;
+                    
+                    // Reset the upload box UI manually since reportForm.reset() doesn't trigger the change event
                     uploadText.textContent = 'Drag a photo into this box or browse the file';
                     uploadText.classList.remove('fw-bold', 'text-success');
                     fileInput.value = '';
