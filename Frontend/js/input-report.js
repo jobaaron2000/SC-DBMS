@@ -28,19 +28,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     const seniorSelect = document.getElementById('reportSeniorId');
     if (seniorSelect) {
         async function populateSeniors() {
-            // Fetch all active seniors from the Masterlist
             const res = await apiFetch('/seniors?status=active'); 
             
             if (res && res.success) {
                 res.data.forEach(senior => {
                     const option = document.createElement('option');
-                    option.value = senior.id; // This is the ID the database needs
+                    option.value = senior.id; 
                     option.textContent = `${senior.full_name} (OSCA ID: ${senior.osca_id})`;
                     seniorSelect.appendChild(option);
                 });
             }
         }
-        populateSeniors(); // Run the function when the page loads
+        populateSeniors(); 
     }
 
     // ---- Form Submission ----
@@ -50,10 +49,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         reportForm.addEventListener('submit', async function (e) {
             e.preventDefault();
 
-            // Grab the ID directly from our new dropdown menu
             const selectedSeniorId = document.getElementById('reportSeniorId').value;
 
-            // Validate a senior was actually selected
             if (!selectedSeniorId) {
                 showWarning('Please select a senior from the dropdown list.');
                 document.getElementById('reportSeniorId').focus();
@@ -68,16 +65,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             formData.append('remarks',     document.getElementById('reportRemarks').value || '');
             formData.append('given_by',    document.getElementById('reportGivenBy').value); 
 
-            // Handle the optional photo
+            // Only append the photo if they actually uploaded one
             if (fileInput.files && fileInput.files.length > 0) {
                 const photoFile = fileInput.files[0];
-                const maxFileSize = 4 * 1024 * 1024; // 4MB in bytes
+                const maxFileSize = 4 * 1024 * 1024; 
 
                 if (photoFile.size > maxFileSize) {
                     showWarning('The photo is too large! Please choose an image smaller than 4MB.');
                     return;
                 }
-                
                 formData.append('proof_photo', photoFile);
             }
 
@@ -95,7 +91,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     showSuccess('Report saved successfully!');
                     reportForm.reset();
                     
-                    // Reset the upload box UI manually since reportForm.reset() doesn't trigger the change event
                     uploadText.textContent = 'Drag a photo into this box or browse the file';
                     uploadText.classList.remove('fw-bold', 'text-success');
                     fileInput.value = '';
