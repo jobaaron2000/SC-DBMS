@@ -38,7 +38,7 @@ router.get('/stats', auth, async (req, res) => {
     }
 });
 
-// UPDATED ROUTE TO HANDLE GENDER FILTER
+// UPDATED ROUTE TO HANDLE GENDER FILTER & DYNAMIC AGE
 router.get('/', auth, async (req, res) => {
     try {
         const { search = '', status = '', gender = '' } = req.query;
@@ -69,7 +69,16 @@ router.get('/', auth, async (req, res) => {
         query += ` ORDER BY full_name ASC`;
 
         const result = await pool.query(query, params);
-        return res.json({ success: true, data: result.rows });
+
+        // --- NEW: Calculate exact age on the fly based on today's date ---
+        const dynamicallyAgedSeniors = result.rows.map(senior => {
+            if (senior.date_of_birth) {
+                senior.age = calculateAge(senior.date_of_birth);
+            }
+            return senior;
+        });
+
+        return res.json({ success: true, data: dynamicallyAgedSeniors });
 
     } catch (err) {
         console.error('List seniors error:', err);
@@ -77,6 +86,7 @@ router.get('/', auth, async (req, res) => {
     }
 });
 
+// UPDATED ROUTE TO HANDLE SINGLE PROFILE FETCH DYNAMIC AGE
 router.get('/:id', auth, async (req, res) => {
     try {
         const pool = await getPool();
@@ -86,7 +96,15 @@ router.get('/:id', auth, async (req, res) => {
         `, [parseInt(req.params.id)]);
 
         if (result.rows.length === 0) return res.status(404).json({ success: false, message: 'Senior not found.' });
-        return res.json({ success: true, data: result.rows[0] });
+        
+        const senior = result.rows[0];
+
+        // --- NEW: Calculate exact age on the fly ---
+        if (senior.date_of_birth) {
+            senior.age = calculateAge(senior.date_of_birth);
+        }
+
+        return res.json({ success: true, data: senior });
     } catch (err) {
         console.error('Get senior error:', err);
         return res.status(500).json({ success: false, message: 'Server error.' });
