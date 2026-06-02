@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             tr.innerHTML = `
                 <td>${report.senior_name} (${report.osca_id})</td>
                 <td>${report.benefit}</td>
-                <td>${report.date} / ${report.time}</td>
+                <td>${report.date}</td>
                 <td>${report.given_by}</td>
                 <td>
                     ${report.proof_url
