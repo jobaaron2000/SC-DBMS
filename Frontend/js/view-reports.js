@@ -67,18 +67,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const r = res.data;
         document.getElementById('detailReportName').textContent    = `${r.senior_name} (${r.osca_id})`;
+        
         // Show proof photo in modal
         const photoBox = document.querySelector('.report-modal-photo');
         if (r.proof_url) {
-        photoBox.innerHTML = `<img src="http://localhost:3000${r.proof_url}" 
-        style="width:100%; height:100%; object-fit:cover; border-radius:8px;">`;
+            photoBox.innerHTML = `<img src="http://localhost:3000${r.proof_url}" 
+            style="width:100%; height:100%; object-fit:cover; border-radius:8px;">`;
         }  else {
-    photoBox.innerHTML = 'No Photo';
-}
+            photoBox.innerHTML = 'No Photo';
+        }
+        
         document.getElementById('detailReportBenefit').textContent = r.benefit;
         document.getElementById('detailReportDesc').textContent    = r.description || 'N/A';
         document.getElementById('detailReportDate').textContent    = r.received_at ? new Date(r.received_at).toLocaleDateString('en-PH') : 'N/A';
-        document.getElementById('detailReportTime').textContent    = r.received_at ? new Date(r.received_at).toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' }) : 'N/A';
+        // Removed detailReportTime line here
         document.getElementById('detailReportRemarks').textContent = r.remarks || 'None';
     });
 
