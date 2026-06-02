@@ -47,8 +47,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             const statusClass = senior.status === 'active' ? 'status-active' : 'status-deceased';
             const statusLabel = senior.status === 'active' ? 'Active' : 'Deceased';
             
-            // Format DB date safely
-            const dobStr = senior.date_of_birth ? senior.date_of_birth.split('T')[0] : 'N/A';
+            // Format DB date into WORDS (e.g., "January 1, 1950")
+            let dobStr = 'N/A';
+            if (senior.date_of_birth) {
+                const dateObj = new Date(senior.date_of_birth);
+                dobStr = dateObj.toLocaleDateString('en-US', {
+                    timeZone: 'UTC', // Prevents the date from shifting backwards by 1 day
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric'
+                });
+            }
 
             const row = document.createElement('tr');
             row.innerHTML = `
