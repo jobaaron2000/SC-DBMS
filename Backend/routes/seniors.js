@@ -11,7 +11,6 @@ const upload = require('../middleware/upload');
 
 const csvUpload = multer({ dest: process.env.NODE_ENV === 'production' ? '/tmp' : 'uploads/temp/' });
 
-// Helper to calculate age if the CSV is missing it
 function calculateAge(dateString) {
     const today = new Date();
     const birthDate = new Date(dateString);
@@ -39,9 +38,10 @@ router.get('/stats', auth, async (req, res) => {
     }
 });
 
+// UPDATED ROUTE TO HANDLE GENDER FILTER
 router.get('/', auth, async (req, res) => {
     try {
-        const { search = '', status = '' } = req.query;
+        const { search = '', status = '', gender = '' } = req.query;
         const pool = await getPool();
 
         let query = `
@@ -59,6 +59,11 @@ router.get('/', auth, async (req, res) => {
         if (status && status !== 'all') {
             query += ` AND status = $${paramIdx}`;
             params.push(status.toLowerCase());
+            paramIdx++;
+        }
+        if (gender && gender !== 'all') {
+            query += ` AND gender ILIKE $${paramIdx}`;
+            params.push(gender);
             paramIdx++;
         }
         query += ` ORDER BY full_name ASC`;
@@ -124,7 +129,6 @@ router.patch('/:id/status', auth, async (req, res) => {
         }
 
         const pool = await getPool();
-        // Fallback for tables without updated_at column
         const result = await pool.query(`UPDATE seniors SET status = $1 WHERE id = $2`, [status, parseInt(req.params.id)]);
 
         if (result.rowCount === 0) return res.status(404).json({ success: false, message: 'Senior not found.' });
@@ -162,7 +166,6 @@ router.post('/bulk-upload', auth, csvUpload.single('csvFile'), (req, res) => {
         .on('data', (data) => {
             rowNumber++; 
             
-            // Normalize keys so spacing and casing don't break the upload
             const norm = {};
             for (let key in data) {
                 const cleanKey = key.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
