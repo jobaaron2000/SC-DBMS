@@ -3,11 +3,10 @@
 // ============================================
 document.addEventListener('DOMContentLoaded', async () => {
 
-    // Guard: must be logged in
     if (!getToken()) { window.location.href = 'landing.html'; return; }
 
     let seniorData = [];
-    let currentViewedSeniorId = null; // Global variable so buttons know who is selected
+    let currentViewedSeniorId = null; 
 
     // ---- Load stats ----
     async function loadStats() {
@@ -40,21 +39,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         tableBody.innerHTML = '';
 
         if (data.length === 0) {
-            tableBody.innerHTML = `<tr><td colspan="7" class="text-center text-muted py-4">No seniors found.</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">No seniors found.</td></tr>`;
             return;
         }
 
         data.forEach(senior => {
             const statusClass = senior.status === 'active' ? 'status-active' : 'status-deceased';
             const statusLabel = senior.status === 'active' ? 'Active' : 'Deceased';
+            
+            // Format DB date safely
+            const dobStr = senior.date_of_birth ? senior.date_of_birth.split('T')[0] : 'N/A';
 
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${senior.osca_id}</td>
                 <td>${senior.full_name}</td>
+                <td>${dobStr}</td>
                 <td>${senior.age}</td>
-                <td>${senior.address}</td>
-                <td>${senior.contact_number || 'N/A'}</td>
                 <td class="${statusClass}">${statusLabel}</td>
                 <td>
                     <button class="btn-view-profile"
@@ -64,11 +65,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                         data-name="${senior.full_name}"
                         data-status="${senior.status}"
                         data-age="${senior.age}"
-                        data-address="${senior.address}"
-                        data-contact="${senior.contact_number || 'N/A'}"
-                        data-dob="${senior.birthday || 'N/A'}"
-                        data-guardian="${senior.guardian_name || 'N/A'}"
-                        data-guardian-contact="${senior.guardian_contact || 'N/A'}">
+                        data-gender="${senior.gender}"
+                        data-dob="${dobStr}">
                         View Profile
                     </button>
                 </td>
@@ -77,34 +75,35 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // ---- Modal population (ONLY updates text/UI, no click events inside!) ----
+    // ---- Modal population ----
     const profileModal = document.getElementById('profileModal');
     if (profileModal) {
         profileModal.addEventListener('show.bs.modal', event => {
             const btn = event.relatedTarget;
             currentViewedSeniorId = btn.getAttribute('data-id');
 
-            document.getElementById('modalName').textContent              = btn.getAttribute('data-name');
-            document.getElementById('modalId').textContent                = btn.getAttribute('data-osca');
-            document.getElementById('modalDetailName').textContent        = btn.getAttribute('data-name');
-            document.getElementById('modalDetailAge').textContent         = btn.getAttribute('data-age');
-            document.getElementById('modalDetailAddress').textContent     = btn.getAttribute('data-address');
-            document.getElementById('modalDetailContact').textContent     = btn.getAttribute('data-contact');
-
-            // Format Date of Birth
-            const dob = btn.getAttribute('data-dob');
-            const formattedDob = dob && dob !== 'N/A' ? dob.split('T')[0] : 'N/A';
-            document.getElementById('modalDetailDob').textContent = formattedDob;
+            document.getElementById('modalName').textContent = btn.getAttribute('data-name');
+            document.getElementById('modalId').textContent = btn.getAttribute('data-osca');
             
-            document.getElementById('modalDetailGuardian').textContent    = btn.getAttribute('data-guardian');
-            document.getElementById('modalDetailGuardianContact').textContent = btn.getAttribute('data-guardian-contact');
+            const detailName = document.getElementById('modalDetailName');
+            if (detailName) detailName.textContent = btn.getAttribute('data-name');
+            
+            const detailAge = document.getElementById('modalDetailAge');
+            if (detailAge) detailAge.textContent = btn.getAttribute('data-age');
+            
+            const detailGender = document.getElementById('modalDetailGender');
+            if (detailGender) detailGender.textContent = btn.getAttribute('data-gender');
+            
+            const detailDob = document.getElementById('modalDetailDob');
+            if (detailDob) detailDob.textContent = btn.getAttribute('data-dob');
 
             const status = btn.getAttribute('data-status');
             const statusBadge = document.getElementById('modalStatus');
-            statusBadge.textContent = status === 'active' ? 'Active' : 'Deceased';
-            statusBadge.className   = status === 'active' ? 'status-active' : 'status-deceased';
+            if(statusBadge) {
+                statusBadge.textContent = status === 'active' ? 'Active' : 'Deceased';
+                statusBadge.className   = status === 'active' ? 'status-active' : 'status-deceased';
+            }
 
-            // Disable/Enable buttons based on status
             const btnDeceased = document.getElementById('btnChangeDeceased');
             const btnActive   = document.getElementById('btnChangeActive');
 
@@ -128,14 +127,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         if (res && res.success) {
-            // Reload background table and stats
             await loadSeniors(
                 document.getElementById('searchInput')?.value || '',
                 document.getElementById('statusFilter')?.value || 'All'
             );
             await loadStats();
 
-            // Update modal UI live without closing it
             const statusBadge = document.getElementById('modalStatus');
             if(statusBadge) {
                 statusBadge.textContent = newStatus === 'active' ? 'Active' : 'Deceased';
@@ -157,31 +154,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // =========================================================
-    // BUTTON ACTIONS (Attached exactly ONCE, outside the modal)
-    // =========================================================
-
-    // Change to Deceased Button
+    // ---- Button Actions ----
     const btnChangeDeceased = document.getElementById('btnChangeDeceased');
     if (btnChangeDeceased) {
         btnChangeDeceased.onclick = async function () {
             if (!this.disabled && confirm('Change senior status to Deceased?')) {
-                await updateSeniorStatus('deceased'); // Send strictly what the DB allows
+                await updateSeniorStatus('deceased');
             }
         };
     }
 
-    // Change to Active Button
     const btnChangeActive = document.getElementById('btnChangeActive');
     if (btnChangeActive) {
         btnChangeActive.onclick = async function () {
             if (!this.disabled && confirm('Change senior status to Active?')) {
-                await updateSeniorStatus('active'); // Send strictly what the DB allows
+                await updateSeniorStatus('active');
             }
         };
     }
 
-    // Delete Profile Button
     const btnDeleteProfile = document.getElementById('btnDeleteProfile');
     if (btnDeleteProfile) {
         btnDeleteProfile.onclick = async () => {
@@ -200,80 +191,61 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
     }
 
-    // Print Button Action
     const printBtn = document.getElementById('btnPrintMasterlist');
     if (printBtn) {
-        printBtn.addEventListener('click', () => {
-            window.print();
-        });
+        printBtn.addEventListener('click', () => { window.print(); });
     }
-// ---- Calculate Upcoming Birthdays ----
+
+    // ---- Calculate Upcoming Birthdays ----
     async function loadUpcomingBirthdays() {
-        // Fetch all active seniors to check their birthdays
         const res = await apiFetch('/seniors?status=active');
         if (!res || !res.success) return;
 
         const activeSeniors = res.data;
         const today = new Date();
-        today.setHours(0, 0, 0, 0); // Reset time to midnight for accurate math
+        today.setHours(0, 0, 0, 0); 
         
-        // Define our "upcoming" window (Next 30 Days)
         const next30Days = new Date(today);
         next30Days.setDate(today.getDate() + 30);
 
         let upcomingCount = 0;
 
         activeSeniors.forEach(senior => {
-            if (senior.birthday && senior.birthday !== 'N/A') {
-                const dob = new Date(senior.birthday);
-                
-                // Create a temporary date for their birthday THIS year
+            if (senior.date_of_birth && senior.date_of_birth !== 'N/A') {
+                const dob = new Date(senior.date_of_birth);
                 let bdayThisYear = new Date(today.getFullYear(), dob.getMonth(), dob.getDate());
 
-                // If their birthday already passed this year, look at their birthday next year
                 if (bdayThisYear < today) {
                     bdayThisYear.setFullYear(today.getFullYear() + 1);
                 }
 
-                // If the birthday falls between today and 30 days from now, count it!
                 if (bdayThisYear >= today && bdayThisYear <= next30Days) {
                     upcomingCount++;
                 }
             }
         });
 
-        // Update the dashboard UI
         const countElement = document.getElementById('upcomingBirthdaysCount');
         if (countElement) countElement.textContent = upcomingCount;
     }
-    // ---- Search & Filter Actions (Upgraded with Debounce) ----
-        let searchTimeout;
 
-        function applyFilters() {
-            clearTimeout(searchTimeout); // Reset the timer on every keystroke
-            
-            // Wait 300ms after the user stops typing before asking the server
-            searchTimeout = setTimeout(() => {
-                const search = document.getElementById('searchInput')?.value || '';
-                const status = document.getElementById('statusFilter')?.value || 'All';
-                loadSeniors(search, status);
-            }, 300); 
-        }
+    // ---- Search & Filter Actions ----
+    let searchTimeout;
+    function applyFilters() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            const search = document.getElementById('searchInput')?.value || '';
+            const status = document.getElementById('statusFilter')?.value || 'All';
+            loadSeniors(search, status);
+        }, 300); 
+    }
 
-        const searchInput = document.getElementById('searchInput');
-        const statusFilter = document.getElementById('statusFilter');
+    const searchInput = document.getElementById('searchInput');
+    const statusFilter = document.getElementById('statusFilter');
 
-        // Attach listeners and add a console warning if the HTML ID is wrong
-        if (searchInput) {
-            searchInput.addEventListener('input', applyFilters);
-        } else {
-            console.warn("⚠️ Cannot find 'searchInput' in the HTML!");
-        }
+    if (searchInput) searchInput.addEventListener('input', applyFilters);
+    if (statusFilter) statusFilter.addEventListener('change', applyFilters);
 
-        if (statusFilter) {
-            statusFilter.addEventListener('change', applyFilters);
-        }
-// ---- Initial load ----
     await loadStats();
     await loadUpcomingBirthdays(); 
     await loadSeniors();

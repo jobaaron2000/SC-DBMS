@@ -390,11 +390,10 @@
         border: 1px solid #dee2e6 !important;
     }
 
-    /* The new landscape width distribution */
-    .custom-table .col-osca-id { width: 12% !important; }
-    .custom-table .col-name { width: 25% !important; }
-    .custom-table .col-age { width: 8% !important; }
-    .custom-table .col-address { width: 35% !important; }
-    .custom-table .col-contact { width: 12% !important; }
-    .custom-table .col-status { width: 8% !important; }
+    .custom-table .col-osca-id { width: 15%; }
+    .custom-table .col-name { width: 30%; }
+    .custom-table .col-dob { width: 15%; }
+    .custom-table .col-age { width: 10%; }
+    .custom-table .col-status { width: 15%; }
+    .custom-table .col-action { width: 15%; }
 }

@@ -2,8 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // 1. PROHIBIT SPECIAL CHARACTERS IN NAMES
     // ==========================================
-    // FIXED: Updated IDs to match your form submission exactly
-    const nameInputs = document.querySelectorAll('#regFirstName, #regMiddleName, #regLastName, #regGuardianName');
+    const nameInputs = document.querySelectorAll('#regFirstName, #regMiddleName, #regLastName');
 
     nameInputs.forEach(input => {
         if (input) {
@@ -15,54 +14,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================
-    // 2. LOCK THE "09" PREFIX FOR CONTACT NUMBERS
+    // 2. SECURITY: GET TOKEN
     // ==========================================
-    // FIXED: Updated IDs to match your form submission exactly
-    const contactInputs = document.querySelectorAll('#regPhone, #regGuardianContact');
-
-    contactInputs.forEach(input => {
-        if (input) {
-            // When the user clicks into the empty box, automatically type '09'
-            input.addEventListener('focus', function() {
-                if (this.value === '') {
-                    this.value = '09';
-                }
-            });
-
-            // As the user types, aggressively enforce the rules
-            input.addEventListener('input', function() {
-                let val = this.value.replace(/\D/g, '');
-
-                if (val.length < 2) {
-                    val = '09';
-                } else if (!val.startsWith('09')) {
-                    val = '09' + val.substring(2); 
-                }
-
-                if (val.length > 11) {
-                    val = val.substring(0, 11);
-                }
-
-                this.value = val;
-            });
-
-            // Prevent the user from highlighting the whole thing and pressing Backspace
-            input.addEventListener('keydown', function(e) {
-                if (e.key === 'Backspace' && this.value === '09') {
-                    e.preventDefault(); 
-                }
-            });
-        }
-    });
-
-    // ==========================================
-    // 3. SECURITY: GET TOKEN (UPDATED)
-    // ==========================================
-    // FIXED: Switched to sessionStorage to respect your auto-logout security update
     const getToken = () => sessionStorage.getItem('token');
 
     // ==========================================
-    // 4. MANUAL SINGLE REGISTRATION
+    // 3. MANUAL SINGLE REGISTRATION
     // ==========================================
     const registerForm = document.getElementById('registerSeniorForm');
     
@@ -70,24 +27,29 @@ document.addEventListener('DOMContentLoaded', () => {
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // Get the name parts
+            // Stitch the full name together
             const first = document.getElementById('regFirstName').value.trim();
             const middle = document.getElementById('regMiddleName').value.trim();
             const last = document.getElementById('regLastName').value.trim();
             const suffix = document.getElementById('regSuffix').value.trim();
-            
-            // Stitch the full name together
             const fullName = `${first} ${middle} ${last} ${suffix}`.replace(/\s+/g, ' ').trim();
 
+            // Calculate Age from Birthday
+            const birthDate = new Date(document.getElementById('regBirthday').value);
+            const today = new Date();
+            let calculatedAge = today.getFullYear() - birthDate.getFullYear();
+            const m = today.getMonth() - birthDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                calculatedAge--;
+            }
+
+            // The Lean Payload (Matching the new Database Structure)
             const newSenior = {
                 osca_id: document.getElementById('regOscaId').value.trim(),
                 full_name: fullName,
-                birthday: document.getElementById('regBirthday').value,
-                address: document.getElementById('regAddress').value.trim(),
-                contact_number: document.getElementById('regPhone').value.trim() || null,
-                guardian_name: document.getElementById('regGuardianName').value.trim() || null,
-                guardian_contact: document.getElementById('regGuardianContact').value.trim() || null,
-                status: 'Active'
+                gender: document.getElementById('regGender').value,
+                date_of_birth: document.getElementById('regBirthday').value,
+                age: calculatedAge
             };
 
             try {
@@ -112,12 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (response.ok && data.success) {
                     showToast("Senior registered successfully!", "success");
                     registerForm.reset(); 
-                    
-                    // Put the "09" back in the phone inputs after reset
-                    const phoneInput = document.getElementById('regPhone');
-                    const guardianPhoneInput = document.getElementById('regGuardianContact');
-                    if (phoneInput) phoneInput.value = '09';
-                    if (guardianPhoneInput) guardianPhoneInput.value = '09';
                 } else {
                     showToast(data.message || "Failed to register senior. Make sure you are logged in.", "error");
                 }
@@ -134,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 5. BULK CSV UPLOAD LOGIC
+    // 4. BULK CSV UPLOAD LOGIC
     // ==========================================
     const csvFileInput = document.getElementById('csvFileInput');
     const btnUploadCsv = document.getElementById('btnUploadCsv');
