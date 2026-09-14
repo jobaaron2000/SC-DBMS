@@ -1,7 +1,7 @@
 # Senior Citizen Management System (SCMS) - Barangay San Gabriel
-Adamson University
-Computer Science - 2nd Year 2nd Semester (SY 2025-2026)
-Information Management (SQL) Course
+*  Adamson University
+*  Computer Science - 2nd Year 2nd Semester (SY 2025-2026)
+*  Information Management (SQL) Course
 
 This is a project that our group created to help aid in encoding Senior Citizens information and storing it in a database. Specifically developed for Barangay San Gabriel, the system transitions manual, paper-based logbooks into a centralized digital platform to improve administrative efficiency. It features automated age calculation, comprehensive benefit distribution tracking, and instant report generation for municipal coordination. Additionally, the application prioritizes data privacy by implementing strict role-based access control (RBAC) and secure OTP authentication for authorized barangay personnel.
 
