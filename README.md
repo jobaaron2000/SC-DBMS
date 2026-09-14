@@ -8,10 +8,8 @@ This is a project that our group created to help aid in encoding Senior Citizens
 ## 🌟 Key Features
 
 *   **Digital Profiling:** Securely store personal data, emergency contacts, and scanned copies of OSCA IDs. Includes automatic age calculation based on birthdates.
-*   **Benefit Distribution Tracking:** Centralized logging module to monitor the distribution of monthly pensions, maintenance medicines, and food packs to prevent duplicate or missed entries.
 *   **Automated Reporting:** Instantly generate clean, printable lists filtering "Active" versus "Deceased" members for DSWD and municipal reporting.
 *   **Dashboard Alerts:** Automated dashboard notifications alerting barangay officials of upcoming senior citizen birthdays.
-*   **Emergency QR Codes:** Generates scannable QR codes for quick access to a senior's basic digital profile and emergency contacts during critical situations.
 *   **Robust Security:** Features Role-Based Access Control (Admin and Staff privileges), JWT authentication, and an email-based One-Time Password (OTP) flow for secure password recovery and changes.
 
 ## 💻 Tech Stack
